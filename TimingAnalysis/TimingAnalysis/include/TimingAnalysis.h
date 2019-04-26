@@ -179,8 +179,8 @@ class TimingAnalysis : public pulse
       // Histo declaration, create new for a new file
       TH1D h_deltat_SimpleThreshold("h_deltat_SimpleThreshold","Time Difference wrt MCP using simple threshold; t(s)",2000,-10e-9,10e-9);
       TH1D h_deltat_Smart("h_deltat_Smart","Time Difference wrt MCP; t(s)",5000,-10e-9,10e-9);
-      TH1D h_TimeFromTrigger_Det0("h_TimeFromTrigger_Det0","Time Difference bw MCP and trigger; t(s)",1000,-150e-9,-50e-9);
-      TH1D h_TimeFromTrigger_Det1("h_TimeFromTrigger_Det1","Time Difference bw DUT and trigger; t(s)",1000,-150e-9,-50e-9);
+      TH1D h_TimeFromTrigger_Det0("h_TimeFromTrigger_Det0","Time Difference bw MCP and trigger; t(s)",1000,0e-9,-150e-9);
+      TH1D h_TimeFromTrigger_Det1("h_TimeFromTrigger_Det1","Time Difference bw DUT and trigger; t(s)",1000,0e-9,150e-9);
 
       TH1D h_max_Det0("h_max_Det0","Amplitude MCP; V",200,0,parameters.rangeMax_ch0);
       TH1D h_max_Det1("h_max_Det1","",100,0,parameters.rangeMax_ch1);
