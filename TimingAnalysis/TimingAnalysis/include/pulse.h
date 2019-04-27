@@ -119,13 +119,23 @@ pulse::pulse(TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("run_scope7729_converted.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("run_scope7729_converted.root");
-      }
-      f->GetObject("pulse",tree);
+if (tree == 0) {
+//   {
+//       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("run_scope7729_converted.root");
+//       if (!f || !f->IsOpen()) {
+//          f = new TFile("run_scope7729_converted.root");
+//       }
+//       f->GetObject("pulse",tree);Init
 
+  TChain *chain = new TChain("pulse","");
+     chain->Add("../v1/run_scope7188_converted.root/pulse");
+      chain->Add("../v1/run_scope7190_converted.root/pulse");
+      chain->Add("../v1/run_scope7192_converted.root/pulse");
+      chain->Add("../v1/run_scope7193_converted.root/pulse");
+      chain->Add("../v1/run_scope7195_converted.root/pulse");
+      chain->Add("../v1/run_scope7197_converted.root/pulse");
+      chain->Add("../v1/run_scope7199_converted.root/pulse");
+tree=chain;
    }
    Init(tree);
 }
