@@ -41,7 +41,7 @@ int main (int argc, char** argv)
         std::cout << "                                  negative signals (V)" << std::endl;
         std::cout << "-p [ --lowpass ] (=0)             Lowpass filter frequency (Hz)" << std::endl;
         std::cout << "-o [ --outputdir ] (=./Results)   output directory" << std::endl;
-        std::cout << "-i [ --filename ]                 input file" << std::endl;
+        //std::cout << "-i [ --filename ]                 input file" << std::endl;
         std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
         return 0;
       }
@@ -49,8 +49,8 @@ int main (int argc, char** argv)
 
       if ( option == "-f" || option == "--channel" )
         secondchannel = std::stoi(value);
-      if ( option == "-i" || option == "--filename" )
-        filename = value;
+     // if ( option == "-i" || option == "--filename" )
+       // filename = value;
       if ( option == "-c" || option == "--cfd_threshold" )
         cfd_threshold = std::stof(value);
       if ( option == "-t" || option == "--threshold" )
@@ -59,8 +59,8 @@ int main (int argc, char** argv)
         lowpass = std::stof(value);
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
-      if ( option == "-i" || option == "--filename" )
-        filename = value;
+     // if ( option == "-i" || option == "--filename" )
+       // filename = value;
       if ( option == "-s" || option == "--saturation" )
         max_amplitude_ch2 = std::stof(value);
       if ( option == "--MCPsaturation" )
@@ -71,16 +71,33 @@ int main (int argc, char** argv)
         firstchannel = std::stoi(value);
     }
   }
-
+/*
   if (filename == "") {
     std::cout << "Input file required! For help use:" << std::endl;
     std::cout << argv[0] << " --help" << std::endl;
     return 0;
-  }
-
+  }*/
+     string filename = "prova";
+     TChain* chain = new TChain("pulse");
+    // g_File.push_back("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scop");
+  // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10528_converted.root");
+  // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10530_converted.root");
+  // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10532_converted.root");
+  // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10538_converted.root");
+  // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10544_converted.root");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7188_converted.root/pulse");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7190_converted.root/pulse");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7192_converted.root/pulse");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7193_converted.root/pulse");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7195_converted.root/pulse");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7197_converted.root/pulse");
+      chain->Add("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope7199_converted.root/pulse");
+  
+  
   // Creating the analysis object from data TTree
   TFile * input_file = new TFile(filename.c_str());
   TTree* input_tree = nullptr;
+  input_tree = chain; 
   input_file->GetObject("pulse",input_tree);
 
   if (input_tree->GetEntries() < 1000) return 0;
