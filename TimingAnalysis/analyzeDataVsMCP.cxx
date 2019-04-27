@@ -8,7 +8,7 @@
 
 int main (int argc, char** argv)
 {
-  std::string filename("");
+  std::string filename("prova");
   std::string outputdir("./Results");
   int firstchannel=3; //MCP
   int secondchannel=0;
@@ -77,7 +77,7 @@ int main (int argc, char** argv)
     std::cout << argv[0] << " --help" << std::endl;
     return 0;
   }*/
-     std::string filename = "prova";
+
      TChain* chain = new TChain("pulse");
     // g_File.push_back("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scop");
   // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10528_converted.root");
