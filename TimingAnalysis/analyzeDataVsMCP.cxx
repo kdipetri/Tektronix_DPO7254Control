@@ -10,8 +10,8 @@ int main (int argc, char** argv)
 {
   std::string filename("");
   std::string outputdir("./Results");
-  int firstchannel=0;
-  int secondchannel=1;
+  int firstchannel=3; //MCP
+  int secondchannel=0;
   float cfd_threshold=0.4;
   float threshold_MCP=-0.01;
   float threshold=-0.01;
@@ -20,10 +20,10 @@ int main (int argc, char** argv)
   // Additional parameters
   float hysteresis=0.3e-3;
   float min_amplitude_MCP=0;
-  float max_amplitude_MCP=0.42;
+  float max_amplitude_MCP=0.3;
   float min_amplitude_ch2=0;
-  float max_amplitude_ch2=0.18;
-  float baseline_p=0.1; //Use first 10% of the samples to compute baseline
+  float max_amplitude_ch2=1;
+  float baseline_p=0.2; //Use first 10% of the samples to compute baseline
 
   for (int i=1; i<argc; ++i)
   {

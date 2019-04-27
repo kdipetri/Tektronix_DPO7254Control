@@ -305,11 +305,11 @@ class TimingAnalysis : public pulse
               std::vector<double> TimeSamplesB;
       	std::vector<double> DataSamplesA;
       	std::vector<double> DataSamplesB;
-      	for (int i=0; i< 1000; ++i) {
+      	for (int i=0; i< 1600; ++i) {
           TimeSamplesA.push_back( (double) (time[0][i]-time[0][0]));
           TimeSamplesB.push_back( (double) (time[0][i]-time[0][0]));
-      	  DataSamplesA.push_back( (double) channel[ChannelMeasureA][i] );
-      	  DataSamplesB.push_back( (double) channel[ChannelMeasureB][i] );
+      	  DataSamplesA.push_back( 1e-3 * (double) channel[ChannelMeasureA][i] );
+      	  DataSamplesB.push_back( 1e-3 * (double) channel[ChannelMeasureB][i] );
       	}
         for (int i=0; i< 500; ++i) {
           time_samples[i] = (Int_t) (1e12 * (time[0][i+200]-time[0][0]));
