@@ -96,7 +96,7 @@ int main (int argc, char** argv)
   
   // Creating the analysis object from data TTree
   TFile * input_file = new TFile(filename.c_str());
-  cout<<"ok"<<endl;
+  std::cout<<"ok"<<std::endl;
   TTree* input_tree = nullptr;
   input_tree = chain; 
   input_file->GetObject("pulse",input_tree);
