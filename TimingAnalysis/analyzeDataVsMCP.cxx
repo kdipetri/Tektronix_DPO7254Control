@@ -16,6 +16,9 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
+  
+  TTree* input_tree = nullptr;
+
 
   // Additional parameters
   float hysteresis=0.3e-3;
