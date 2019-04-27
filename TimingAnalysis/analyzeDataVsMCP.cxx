@@ -17,8 +17,6 @@ int main (int argc, char** argv)
   float threshold=-0.01;
   float lowpass=0;
   
-  TTree* input_tree = nullptr;
-
 
   // Additional parameters
   float hysteresis=0.3e-3;
@@ -81,7 +79,7 @@ int main (int argc, char** argv)
     return 0;
   }*/
 
-     TChain* chain = new TChain("pulse");
+     TChain* input_tree = new TChain("pulse");
     // g_File.push_back("/home/daq/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scop");
   // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10528_converted.root");
   // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10530_converted.root");
