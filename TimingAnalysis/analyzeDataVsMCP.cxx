@@ -86,13 +86,13 @@ int main (int argc, char** argv)
   // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10532_converted.root");
   // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10538_converted.root");
   // g_File.push_back("../RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope10544_converted.root");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7188_converted.root/pulse");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7190_converted.root/pulse");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7192_converted.root/pulse");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7193_converted.root/pulse");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7195_converted.root/pulse");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7197_converted.root/pulse");
-      input_tree->Add("/root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7199_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7188_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7190_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7192_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7193_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7195_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7197_converted.root/pulse");
+      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7199_converted.root/pulse");
 
   
   // Creating the analysis object from data TTree
