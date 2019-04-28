@@ -191,8 +191,8 @@ class TimingAnalysis : public pulse
       TH1D h_baseline_Det1("h_baseline_Det1","Baseline of DUT; V",200,-0.01,0.01);
       TH1D h_pedestal_Det0("h_pedestal_Det0","Pedestal (RMS before pulse) of MCP; V",1000,-0.1,0.1);
       TH1D h_pedestal_Det1("h_pedestal_Det1","Pedestal (RMS before pulse) of DUT; V",1000,-0.1,0.1);
-      TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",150,0,150);
-      TH1D h_SNR_Det1("h_SNR_Det1","SNR of DUT; SNR",150,0,150);
+      TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",320,0,320);
+      TH1D h_SNR_Det1("h_SNR_Det1","SNR of DUT; SNR",160,20,180);
 
       TH1D h_risetime_Det0("h_risetime_Det0","Risetime of MCP; rt (s)",200,0,4e-9);
       TH1D h_risetime_Det1("h_risetime_Det1","Risetime of DUT; rt (s)",200,0,4e-9);
