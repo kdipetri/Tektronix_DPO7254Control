@@ -17,7 +17,7 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
-  std::string Run_config_in = NULL;
+//   std::string Run_config_in = NULL;
   int configuration = 0; 
   
   
@@ -66,7 +66,7 @@ int main (int argc, char** argv)
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
       if ( option == "-config" || option == "--configuration" )
-        configuration = stoi(value);
+        configuration = std::stoi(value);
      // if ( option == "-i" || option == "--filename" )
        // filename = value;
       if ( option == "-s" || option == "--saturation" )
