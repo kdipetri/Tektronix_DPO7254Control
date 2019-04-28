@@ -65,8 +65,8 @@ int main (int argc, char** argv)
         lowpass = std::stof(value);
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
-      if ( option == "-config" || option == "--configuration" )
-        configuration = std::stoi(value);
+//       if ( option == "-config" || option == "--configuration" )
+//         configuration = std::stoi(value);
      // if ( option == "-i" || option == "--filename" )
        // filename = value;
       if ( option == "-s" || option == "--saturation" )
