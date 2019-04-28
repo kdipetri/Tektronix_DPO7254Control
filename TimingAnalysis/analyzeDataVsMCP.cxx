@@ -17,7 +17,7 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
-//   std::string Run_config_in = NULL;
+  std::string Run_config_in = NULL;
   int configuration = 0; 
   
   
@@ -121,7 +121,7 @@ int main (int argc, char** argv)
 		{
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
-      		  std::cout<<path<<endl;
+      		  std::cout<<path<<std:endl;
 		  input_tree->Add(path);
 		}
   }
