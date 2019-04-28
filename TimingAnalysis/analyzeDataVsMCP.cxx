@@ -55,7 +55,7 @@ int main (int argc, char** argv)
       if ( option == "-f" || option == "--channel" )
         secondchannel = std::stoi(value);
       if ( option == "-i" || option == "--Run_cofig_in" ) 
-        Run_config_in = std::stof(value);
+        Run_config_in = value;
       if ( option == "-c" || option == "--cfd_threshold" )
         cfd_threshold = std::stof(value);
       if ( option == "-t" || option == "--threshold" )
