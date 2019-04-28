@@ -17,7 +17,7 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
-  std::string Run_config_in = NULL;
+  std::string Run_config_in;
   int configuration = 0; 
   
   
@@ -39,7 +39,7 @@ int main (int argc, char** argv)
         std::cout << "List of options: " << std::endl;
         std::cout << "-h [ --help ]                     produce help message" << std::endl;
         std::cout << "-f [ --channel ] (=0)             channel to analyze" << std::endl;
-        std::cout << "-config [ --configuration ]       Global congif to analyze" << std::endl;
+        std::cout << "-k [ --configuration ]       Global congif to analyze" << std::endl;
         std::cout << "-c [ --cfd_threshold ] (=0.4)     CFD fraction" << std::endl;
         std::cout << "                                  a negative value will start a scan with" << std::endl;
         std::cout << "                                  a step equal to |cfd_threshold|" << std::endl;
@@ -47,7 +47,7 @@ int main (int argc, char** argv)
         std::cout << "                                  negative signals (V)" << std::endl;
         std::cout << "-p [ --lowpass ] (=0)             Lowpass filter frequency (Hz)" << std::endl;
         std::cout << "-o [ --outputdir ] (=./Results)   output directory" << std::endl;
-//         std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
+        std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
         std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
         return 0;
       }
@@ -120,8 +120,8 @@ int main (int argc, char** argv)
 		if (config == configuration)
 		{
 		  TString path;
-		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
-      		  std::cout<<path<<std:endl;
+		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
+      		  std::cout<<path<<std::endl;
 		  input_tree->Add(path);
 		}
   }
