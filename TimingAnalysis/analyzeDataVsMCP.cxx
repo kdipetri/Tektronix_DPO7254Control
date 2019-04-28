@@ -55,8 +55,8 @@ int main (int argc, char** argv)
 
       if ( option == "-f" || option == "--channel" )
         secondchannel = std::stoi(value);
-//       if ( option == "-i" || option == "--Run_cofig_in" ) 
-//         Run_config_in = value;
+      if ( option == "-i" || option == "--Run_cofig_in" ) 
+        Run_config_in = value;
       if ( option == "-c" || option == "--cfd_threshold" )
         cfd_threshold = std::stof(value);
       if ( option == "-t" || option == "--threshold" )
@@ -65,8 +65,8 @@ int main (int argc, char** argv)
         lowpass = std::stof(value);
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
-//       if ( option == "-config" || option == "--configuration" )
-//         configuration = std::stoi(value);
+      if ( option == "-k" || option == "--configuration" )
+        configuration = std::stoi(value);
      // if ( option == "-i" || option == "--filename" )
        // filename = value;
       if ( option == "-s" || option == "--saturation" )
@@ -80,11 +80,11 @@ int main (int argc, char** argv)
     }
   }
 
-//   if (Run_config_in == "") {
-//     std::cout << "Input Run_ config.txt file required! For help use:" << std::endl;
-//     std::cout << argv[0] << " --help" << std::endl;
-//     return 0;
-//   }
+  if (Run_config_in == "") {
+    std::cout << "Input Run_ config.txt file required! For help use:" << std::endl;
+    std::cout << argv[0] << " --help" << std::endl;
+    return 0;
+  }
 	
      //16ch 8E14 configuration64
      TChain* input_tree = new TChain("pulse");
@@ -96,37 +96,37 @@ int main (int argc, char** argv)
 //       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11120_converted.root/pulse");
 //       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11121_converted.root/pulse");
  
-      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7182_converted.root/pulse");
-      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7183_converted.root/pulse");
-      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7185_converted.root/pulse");
-      input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7187_converted.root/pulse");
+//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7182_converted.root/pulse");
+//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7183_converted.root/pulse");
+//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7185_converted.root/pulse");
+//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7187_converted.root/pulse");
     
 	
 
-//   std::ifstream datafile (Run_config_in.c_str());
-//   std::string line;
-//   Int_t config,run;
+  std::ifstream datafile (Run_config_in.c_str());
+  std::string line;
+  Int_t config,run;
   
-//   if (datafile.is_open())
-//     {
-//       while ( getline (datafile,line) )
-// 	{
-// 	  if ((line.at(0)>='0' && line.at(0)<='9'))
-// 	    {
-//       std::stringstream iss(line);
-//       Int_t run;
-//       iss>>run>>config; 
+  if (datafile.is_open())
+    {
+      while ( getline (datafile,line) )
+	{
+	  if ((line.at(0)>='0' && line.at(0)<='9'))
+	    {
+      std::stringstream iss(line);
+      Int_t run;
+      iss>>run>>config; 
       
-// 		if (config == configuration)
-// 		{
-// 		  TString path;
-// 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
-//       		  std::cout<<path<<endl;
-// 		  input_tree->Add(path);
-// 		}
-//   }
-//  }
-// }
+		if (config == configuration)
+		{
+		  TString path;
+		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
+      		  std::cout<<path<<endl;
+		  input_tree->Add(path);
+		}
+  }
+ }
+}
 
   
   // Creating the analysis object from data TTree
