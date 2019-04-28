@@ -65,7 +65,7 @@ int main (int argc, char** argv)
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
       if ( option == "-config" || option == "--configuration" )
-        configuration = value;
+        configuration = stoi(value);
      // if ( option == "-i" || option == "--filename" )
        // filename = value;
       if ( option == "-s" || option == "--saturation" )
@@ -94,7 +94,7 @@ int main (int argc, char** argv)
 //       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7197_converted.root/pulse");
 //       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7199_converted.root/pulse");
   
-  ifstream datafile (Run_config_in.c_str());
+  std::ifstream datafile (Run_config_in.c_str());
   std::string line;
   Int_t config,run;
   
@@ -104,7 +104,7 @@ int main (int argc, char** argv)
 	{
 	  if ((line.at(0)>='0' && line.at(0)<='9'))
 	    {
-      stringstream iss(line);
+      std::stringstream iss(line);
       Int_t run;
       iss>>run>>config; 
       
