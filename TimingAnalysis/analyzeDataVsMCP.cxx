@@ -47,7 +47,7 @@ int main (int argc, char** argv)
         std::cout << "                                  negative signals (V)" << std::endl;
         std::cout << "-p [ --lowpass ] (=0)             Lowpass filter frequency (Hz)" << std::endl;
         std::cout << "-o [ --outputdir ] (=./Results)   output directory" << std::endl;
-        std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
+//         std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
         std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
         return 0;
       }
@@ -55,8 +55,8 @@ int main (int argc, char** argv)
 
       if ( option == "-f" || option == "--channel" )
         secondchannel = std::stoi(value);
-      if ( option == "-i" || option == "--Run_cofig_in" ) 
-        Run_config_in = value;
+//       if ( option == "-i" || option == "--Run_cofig_in" ) 
+//         Run_config_in = value;
       if ( option == "-c" || option == "--cfd_threshold" )
         cfd_threshold = std::stof(value);
       if ( option == "-t" || option == "--threshold" )
@@ -80,11 +80,11 @@ int main (int argc, char** argv)
     }
   }
 
-  if (Run_config_in == "") {
-    std::cout << "Input Run_ config.txt file required! For help use:" << std::endl;
-    std::cout << argv[0] << " --help" << std::endl;
-    return 0;
-  }
+//   if (Run_config_in == "") {
+//     std::cout << "Input Run_ config.txt file required! For help use:" << std::endl;
+//     std::cout << argv[0] << " --help" << std::endl;
+//     return 0;
+//   }
 	
      //16ch 8E14 configuration64
      TChain* input_tree = new TChain("pulse");
