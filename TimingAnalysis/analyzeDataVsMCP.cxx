@@ -16,6 +16,9 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
+  std::string Run_config_in = NULL;
+  int configuration = 0; 
+  
   
 
   // Additional parameters
@@ -52,7 +55,7 @@ int main (int argc, char** argv)
       if ( option == "-f" || option == "--channel" )
         secondchannel = std::stoi(value);
       if ( option == "-i" || option == "--Run_cofig_in" ) 
-        Run_config_in = value;
+        Run_config_in = std::stof(value);
       if ( option == "-c" || option == "--cfd_threshold" )
         cfd_threshold = std::stof(value);
       if ( option == "-t" || option == "--threshold" )
@@ -92,9 +95,7 @@ int main (int argc, char** argv)
 //       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7199_converted.root/pulse");
   
   ifstream datafile (Run_config_in.c_str());
-  string line;
-  vector<TChain*> vec_tch;
-  TChain* fchain;
+  std::string line;
   Int_t config,run;
   
   if (datafile.is_open())
