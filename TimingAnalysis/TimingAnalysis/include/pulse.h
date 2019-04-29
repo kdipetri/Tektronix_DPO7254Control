@@ -59,7 +59,9 @@ public :
    Float_t         y_dut[3];
    Float_t         chi2;
    Int_t           ntracks;
-   Int_t           nplanes;
+   Int_t           nplanes;  //for the old tree. Uses the group of strips + pixels. Standard cut (if every stages was on):: nplanes>=19
+   Int_t           npix; //implemented for the new ttree. Uses the pixels for the tracking. Standard cut:: npix > 0
+   Int_t           nback; //implemented for the new ttree. Uses the strip on the back of the DUT for the tracking. Standard cut:: nback > 0
 
    // List of branches
    TBranch        *b_i_evt;   //!
