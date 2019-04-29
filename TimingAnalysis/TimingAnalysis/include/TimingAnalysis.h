@@ -151,7 +151,7 @@ class TimingAnalysis : public pulse
       int eventCounter=0;
       int prevHitNumber=10;
 
-      double T_S\le_A = .0;
+      double T_Sample_A = .0;
       double T_Sample_B = .0;
       double T_threshold_A = .0;
       double T_threshold_B = .0;
