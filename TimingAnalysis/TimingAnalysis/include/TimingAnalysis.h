@@ -407,12 +407,17 @@ class TimingAnalysis : public pulse
 
 
         	//Select couple of hits
-        	h_coincidences.Fill(coincidences);
+        	h_coincidencesT_Sample_A.Fill(coincidences);
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
-        	if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntrack == 1 && npix > 0 && nback > 0 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 0.18 && amp[3] > 0.11) {
-        	  if (T_Sample_A!=-1 && T_Sample_B!=-1) {
+
+		//Adding geometrical cut for new trees
+        	//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntrack == 1 && npix > 0 && nback > 0 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 0.18 && amp[3] > 0.11) {
+        	
+		//Geometrical cut for old trees	
+	      if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nplanes >= 19 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 0.18 && amp[3] > 0.11) {
+		  if (T_Sample_A!=-1 && T_Sample_B!=-1) {
               time_reference = (Int_t) (1e12 * T_Sample_A);
               // outTreeFile.cd();
               // outTree.Fill();
