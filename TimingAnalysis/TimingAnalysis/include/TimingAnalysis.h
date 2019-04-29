@@ -151,7 +151,7 @@ class TimingAnalysis : public pulse
       int eventCounter=0;
       int prevHitNumber=10;
 
-      double T_Sample_A = .0;
+      double T_S\le_A = .0;
       double T_Sample_B = .0;
       double T_threshold_A = .0;
       double T_threshold_B = .0;
@@ -191,7 +191,7 @@ class TimingAnalysis : public pulse
       TH1D h_baseline_Det1("h_baseline_Det1","Baseline of DUT; V",200,-0.01,0.01);
       TH1D h_pedestal_Det0("h_pedestal_Det0","Pedestal (RMS before pulse) of MCP; V",1000,-0.1,0.1);
       TH1D h_pedestal_Det1("h_pedestal_Det1","Pedestal (RMS before pulse) of DUT; V",1000,-0.1,0.1);
-      TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",320,0,320);
+      TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",320,0,500);
       TH1D h_SNR_Det1("h_SNR_Det1","SNR of DUT; SNR",160,0,180);
 
       TH1D h_risetime_Det0("h_risetime_Det0","Risetime of MCP; rt (s)",200,0,4e-9);
@@ -411,7 +411,7 @@ class TimingAnalysis : public pulse
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
-        	if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A)<10e-9 ) {
+        	if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntrack == 1 && npix > 0 && nback > 0 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 0.18 && amp[3] > 0.11) {
         	  if (T_Sample_A!=-1 && T_Sample_B!=-1) {
               time_reference = (Int_t) (1e12 * T_Sample_A);
               // outTreeFile.cd();
