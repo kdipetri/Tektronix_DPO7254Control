@@ -407,7 +407,7 @@ class TimingAnalysis : public pulse
 
 
         	//Select couple of hits
-        	h_coincidencesT_Sample_A.Fill(coincidences);
+        	h_coincidences.Fill(coincidences);
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
