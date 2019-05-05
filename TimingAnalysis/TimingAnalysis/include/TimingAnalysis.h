@@ -509,11 +509,11 @@ class TimingAnalysis : public pulse
         langau1->SetNpx(10000);
         langau1->SetParNames("Width","MP","Area","GSigma");
         // langau1->SetParameters(0.05*parameters.rangeMax_ch0,0.25*parameters.rangeMax_ch0,50,h_pedestal_Det1.GetRMS());
-        langau1->SetParameters(0.015,0.015,0.5,h_pedestal_Det1.GetRMS());
-	langau1->SetParLimits(0,0,0.01);
-	langau1->SetParLimits(1,0,0.2);
-	langau1->SetParLimits(2,0,10);
-	langau1->SetParLimits(3,0,0.05);
+        langau1->SetParameters(0.015,0.015,0.5,h_pedestal_Det1.GetRMS()); 
+	langau1->SetParLimits(0,0,0.01); //Width of the Landau
+	langau1->SetParLimits(1,0,0.2);  //MP Landau 
+	langau1->SetParLimits(2,0,100);  //Total Area 
+	langau1->SetParLimits(3,0,0.05);  //Width of the convoluted Gaussian 
         langau1->SetRange(parameters.rangeMin_ch1,parameters.rangeMax_ch1);
         // langau1->FixParameter(3,h_pedestal_Det0.GetRMS());
         h_max_selected_Det1.Fit(langau1,"RFB");
