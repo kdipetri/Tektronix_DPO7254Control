@@ -10,7 +10,7 @@
 int main (int argc, char** argv)
 {
   //std::string filename("prova");
-  std::string sensorname = "";
+  std::string namesensor;
   std::string outputdir("./Results");
   int firstchannel=3; //MCP
   int secondchannel=0;
