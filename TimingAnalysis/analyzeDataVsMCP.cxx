@@ -80,7 +80,7 @@ int main (int argc, char** argv)
       if ( option == "--MCPchannel" )
         firstchannel = std::stoi(value);
       if ( option == "-n" || option == "--namesensor" )
-        nameSe = std::stoi(value);
+        namesensor = (value);
     }
   }
 
@@ -145,15 +145,15 @@ int main (int argc, char** argv)
 
   TimingAnalysis example_analyzeData(input_tree);
 
-  // Output file
+  // Output file	
   float cfd_tmp =0 ;
   cfd_tmp = cfd_threshold * 100; 
   std::string cfd_string = std::to_string(cfd_tmp);
-  cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size())
+  cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
   TString filenameTail(cfd_string);
   filenameTail+="_CFD";	
   filenameTail+="_";	
-  filenameTail+=sensorname;
+  filenameTail+=namesensor;
   filenameTail+="_Ch";	
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
