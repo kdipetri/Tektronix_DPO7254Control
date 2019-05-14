@@ -8,24 +8,26 @@ Code for timing analysis. Author: **Nicola Minafra**
 $> make
 $> ./example_analyzeData --help
   Allowed options:
-  -h [ --help ]                         produce help message
-  -f [ --firstchannel ] arg (=0)        Channel under analysis (the other channel is set to MCP by default)
-  -s [ --saturation ] arg (=1)          Saturation channel under analysis
-  -c [ --cfd_threshold ] arg (=0.4)     CFD fraction
-  -t [ --threshold_ch1 ] arg (=-0.1)    Threshold for ch under analysis, negative for negative signals (V)
-  -p [ --lowpass ] arg (=0)             Lowpass filter frequency (Hz)
-  -j [ --hysteresis ] arg (=0.001)      Hysteresis for the discriminator (V)
-  -t [ --treename ] arg (=pulse)        Name of the TTree
-  --MCPthreshold                        Offline threshold MCP
-  --MCPsaturation                       Cut saturation MCP
-  -o [ --outputdir ] arg                output directory (=~/Work/public/Fermilab/Results)
-  -i [ --filename ] arg                 input file
-
+        std::cout << "List of options: " << std::endl;
+        std::cout << "-h [ --help ]                     produce help message" << std::endl;
+        std::cout << "-f [ --channel ] (=0)             channel to analyze" << std::endl;
+        std::cout << "-k [ --configuration ]       Global congif to analyze" << std::endl;
+        std::cout << "-c [ --cfd_threshold ] (=0.4)     CFD fraction" << std::endl;
+        std::cout << "                                  a negative value will start a scan with" << std::endl;
+        std::cout << "                                  a step equal to |cfd_threshold|" << std::endl;
+        std::cout << "-t [ --threshold ] (=-0.1)        Threshold, negative for" << std::endl;
+        std::cout << "                                  negative signals (V)" << std::endl;
+        std::cout << "-p [ --lowpass ] (=0)             Lowpass filter frequency (Hz)" << std::endl;
+        std::cout << "-o [ --outputdir ] (=./Results)   output directory" << std::endl;
+        std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
+        std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
+        std::cout << "-n [ --namesensor ]               name of the sensor and board" << std::endl;
 ```
+The code needs the name of the sensor, the output directory and the config file to operate correctly. The input file is also crucial: the analysis script requires a text file where are store all of the run and config number.
 
 For Fermilab analysis:
 ```
-$> ./example_analyzeData -i /afs/cern.ch/work/n/nminafra/public/Fermilab/  -f 1 -t -0.03 -s 0/6 -c 0.5 --lowpass 700e6[...]
+$> ./example_analyzeData -i ../RunTable/Run_config.txt  -f 1 -t -0.03 -s 0.6 -c 0.5 --lowpass 700e6 -n HPK4x4prerad -O ./Results/
 ```
 
 The output root file is saved in **Results/** with the same name of the input file, plus **_result_ch0_ch1.root**
