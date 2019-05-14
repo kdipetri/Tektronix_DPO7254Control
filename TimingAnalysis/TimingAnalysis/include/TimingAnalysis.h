@@ -412,12 +412,26 @@ class TimingAnalysis : public pulse
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
 
-		//Adding geometrical cut for new trees
-        	//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntrack == 1 && npix > 0 && nback > 0 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 0.18 && amp[3] > 0.11) {
-        	
-		//Geometrical cut for old trees	
-	      if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nplanes >= 19 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 180 && amp[3] > 110) {
-		  if (T_Sample_A!=-1 && T_Sample_B!=-1) {
+                //NO GEOMETRICAL CUT        
+//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntracks == 1 && nplanes>=19 && amp[3] < 80 && amp[3] > 30) {
+
+
+                //Adding geometrical cut for new trees(nback > 0, npix > 0)
+//config81              
+//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntracks == 1 && npix > 0 && nback > 0 && x_dut[2] > 16.3 && x_dut[2] < 19 && y_dut[2] > 34.8 && y_dut[2] < 35.5 && amp[3] < 180 && amp[3] > 110) {
+
+//config87              
+//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntracks == 1 && npix > 0 && nback > 0 && x_dut[2] > 13.3 && x_dut[2] < 15.9 && y_dut[2] > 33.95 && y_dut[2] < 34.6 && amp[3] < 80 && amp[3] > 30) {
+
+
+                //Geometrical cut for old trees(no nback or npix, nplanes>=19, ntracks==1)      
+//config26            
+//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nback > 0 && npix > 0 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 180 && amp[3] > 110 && ntracks == 1) {
+
+//config24            
+if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nplanes>=19 && x_dut[0] > 8 && x_dut[0] < 8.5 && y_dut[0] > 19.5 && y_dut[2] < 21.5 && amp[3] < 120 && amp[3] > 170 && ntracks == 1) {
+	     
+	    if (T_Sample_A!=-1 && T_Sample_B!=-1) {
               time_reference = (Int_t) (1e12 * T_Sample_A);
               // outTreeFile.cd();
               // outTree.Fill();
