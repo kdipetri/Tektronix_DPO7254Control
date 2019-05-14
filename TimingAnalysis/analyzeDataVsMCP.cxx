@@ -11,7 +11,7 @@ int main (int argc, char** argv)
 {
 //   std::string filename;
   std::string namesensor;
-  std::string outputdir("./Results");
+  std::string outputdir("./Results/");
   int firstchannel=3; //MCP
   int secondchannel=0;
   float cfd_threshold=0.4;
