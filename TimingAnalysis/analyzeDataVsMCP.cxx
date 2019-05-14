@@ -9,7 +9,8 @@
 
 int main (int argc, char** argv)
 {
-  std::string filename("prova");
+  //std::string filename("prova");
+  std::string sensorname = "";
   std::string outputdir("./Results");
   int firstchannel=3; //MCP
   int secondchannel=0;
@@ -49,7 +50,8 @@ int main (int argc, char** argv)
         std::cout << "-o [ --outputdir ] (=./Results)   output directory" << std::endl;
         std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
         std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
-        return 0;
+	std::cout << "-n [ --namesensor ]               name of the sensor and board" << std::endl;
+	return 0;
       }
       std::string value(argv[++i]);
 
@@ -77,6 +79,8 @@ int main (int argc, char** argv)
         threshold_MCP = std::stof(value);
       if ( option == "--MCPchannel" )
         firstchannel = std::stoi(value);
+      if ( option == "-n" || option == "--namesensor" )
+        nameSe = std::stoi(value);
     }
   }
 
@@ -142,14 +146,25 @@ int main (int argc, char** argv)
   TimingAnalysis example_analyzeData(input_tree);
 
   // Output file
-  TString filenameTail("_results_MCP");
+  float cfd_tmp =0 ;
+  cfd_tmp = cfd_threshold * 100; 
+  std::string cfd_string = std::to_string(cfd_tmp);
+  cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size())
+  TString filenameTail(cfd_string);
+  filenameTail+="_CFD";	
+  filenameTail+="_";	
+  filenameTail+=sensorname;
+  filenameTail+="_Ch";	
   filenameTail+=firstchannel;
-  filenameTail+="_";
+  filenameTail+="vsCh";
   filenameTail+=secondchannel;
-  filename.insert(filename.size()-5,filenameTail.Data());
-  filename.erase(0,filename.find_last_of('/',filename.size()));
-  filename.insert(0,outputdir);
+  filenameTail+="_Results";	
+  std::string filename; 
+  filename += outputdir; 
+  filename += filenameTail;  
   TFile * f_root = new TFile (filename.c_str(),"RECREATE");
+
+			
   bool empty=false;
   bool full=false;
   bool low=false;
