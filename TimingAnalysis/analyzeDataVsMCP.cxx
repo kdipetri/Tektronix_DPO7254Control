@@ -151,7 +151,7 @@ int main (int argc, char** argv)
   std::string cfd_string = std::to_string(cfd_tmp);
   cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
   TString filenameTail(cfd_string);
-  filenameTail+="_CFD";	
+  filenameTail+="CFD";	
   filenameTail+="_";	
   filenameTail+=namesensor;
   filenameTail+="_Ch";	
@@ -161,7 +161,9 @@ int main (int argc, char** argv)
   filenameTail+="_Results";	
   std::string filename; 
   filename += outputdir; 
-  filename += filenameTail;  
+  filename += filenameTail; 
+  filename += ".root";  
+
   TFile * f_root = new TFile (filename.c_str(),"RECREATE");
 			
   bool empty=false;
