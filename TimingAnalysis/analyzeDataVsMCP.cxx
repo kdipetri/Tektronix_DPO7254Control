@@ -9,7 +9,7 @@
 
 int main (int argc, char** argv)
 {
-  //std::string filename("prova");
+  std::string filename;
   std::string namesensor;
   std::string outputdir("./Results");
   int firstchannel=3; //MCP
@@ -141,7 +141,7 @@ int main (int argc, char** argv)
 //   input_file->GetObject("pulse",input_tree);
 
   if (input_tree->GetEntries() < 1000) return 0;
-  else std::cout<<"SELECTED: "<< filename << std::endl;
+  else std::cout<<"SELECTED: "<< sensorname << std::endl;
 
   TimingAnalysis example_analyzeData(input_tree);
 
