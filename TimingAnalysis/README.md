@@ -2,7 +2,13 @@
 
 Code for timing analysis. Author: **Nicola Minafra**
 
-* source ../includes.CMSTimingSetup.sh
+* on cmslpc: bash
+* on cmslpc: source ../includes/ForCMSLPC 
+* on lxplus: source ../includes.CMSTimingSetup.sh
+* Download the latest .csv file from the automatic logbook
+* cd ../RunTable
+* python readcsv.py
+* cd ../TimingAnalysis
 * Usage:
 ```
 $> make
