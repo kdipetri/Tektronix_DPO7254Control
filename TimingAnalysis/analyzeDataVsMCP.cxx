@@ -164,8 +164,6 @@ int main (int argc, char** argv)
   filename += outputdir; 
   filename += filenameTail; 
   filename += ".root";
-
-  TFile * f_root = new TFile (filename.c_str(),"RECREATE");
  	 } 
 	
 else {
@@ -181,10 +179,9 @@ else {
   filename += outputdir; 
   filename += filenameTail; 
   filename += ".root";
-
-  TFile * f_root = new TFile (filename.c_str(),"RECREATE");
 	}
-			
+
+  TFile * f_root = new TFile (filename.c_str(),"RECREATE");	
   bool empty=false;
   bool full=false;
   bool low=false;
