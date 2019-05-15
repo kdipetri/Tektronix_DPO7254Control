@@ -165,11 +165,9 @@ int main (int argc, char** argv)
   filenameTail+=secondchannel;
   filenameTail+="_filter";
    if(lowpass >= 0)   {
-	  filenameTail+="_";
 	  filenameTail+=lp_string;
    		}
    else if (lowpass < 0)  {
-	   filenameTail+="_";
 	   filenameTail+="_LPscan";
    		}
   filename += outputdir; 
@@ -186,11 +184,9 @@ else {
   filenameTail+=secondchannel;
   filenameTail+="_filter";
    if(lowpass >= 0)   {
-	  filenameTail+="_";
 	  filenameTail+=lp_string;
    		}
    else if (lowpass < 0)  {
-	   filenameTail+="_";
 	   filenameTail+="_LPscan";
    		}
   filename += outputdir; 
