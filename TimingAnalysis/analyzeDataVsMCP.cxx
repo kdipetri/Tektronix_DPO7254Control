@@ -11,6 +11,7 @@ int main (int argc, char** argv)
 {
 //   std::string filename;
   std::string namesensor;
+  std::string filename; 
   std::string outputdir("./Results/");
   int firstchannel=3; //MCP
   int secondchannel=0;
@@ -160,7 +161,6 @@ int main (int argc, char** argv)
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
   filenameTail+="_Results";	
-  std::string filename; 
   filename += outputdir; 
   filename += filenameTail; 
   filename += ".root";
@@ -175,7 +175,6 @@ else {
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
   filenameTail+="_Results";	
-  std::string filename; 
   filename += outputdir; 
   filename += filenameTail; 
   filename += ".root";
