@@ -157,31 +157,41 @@ int main (int argc, char** argv)
   std::string cfd_string = std::to_string(cfd_tmp);
   cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
   TString filenameTail(cfd_string);
-  filenameTail+="CFD";	
-  filenameTail+="_";	
   filenameTail+=namesensor;
+  filenameTail+="_CFD";		
   filenameTail+="_Ch";	
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
   filenameTail+="_filter";
-   if(lowpass >= 0)   filenameTail+=lp_string;
-   else if (lowpass < 0)   filenameTail+="LPscan";
+   if(lowpass >= 0)   {
+	  filenameTail+="_";
+	  filenameTail+=lp_string;
+   		}
+   else if (lowpass < 0)  {
+	   filenameTail+="_";
+	   filenameTail+="_LPscan";
+   		}
   filename += outputdir; 
   filename += filenameTail; 
   filename += ".root";
  	 } 
 	
 else {
-  TString filenameTail("CFDscan");
-  filenameTail+="_";	
-  filenameTail+=namesensor;
+  TString filenameTail(namesensor);	
+  filenameTail+="_CFDscan";
   filenameTail+="_Ch";	
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
-   if(lowpass >= 0)   filenameTail+=lp_string;
-   else if (lowpass < 0)   filenameTail+="LPscan";
+   if(lowpass >= 0)   {
+	  filenameTail+="_";
+	  filenameTail+=lp_string;
+   		}
+   else if (lowpass < 0)  {
+	   filenameTail+="_";
+	   filenameTail+="_LPscan";
+   		}
   filename += outputdir; 
   filename += filenameTail; 
   filename += ".root";
