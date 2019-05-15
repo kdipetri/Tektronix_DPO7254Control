@@ -184,6 +184,7 @@ else {
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
+  filenameTail+="_filter";
    if(lowpass >= 0)   {
 	  filenameTail+="_";
 	  filenameTail+=lp_string;
