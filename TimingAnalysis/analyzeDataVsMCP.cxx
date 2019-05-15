@@ -12,6 +12,7 @@ int main (int argc, char** argv)
 //   std::string filename;
   std::string namesensor;
   std::string filename; 
+  std::string lp_string; 
   std::string outputdir("./Results/");
   int firstchannel=3; //MCP
   int secondchannel=0;
@@ -19,6 +20,7 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
+  
   std::string Run_config_in;
   int configuration = 0; 
   
@@ -65,7 +67,7 @@ int main (int argc, char** argv)
       if ( option == "-t" || option == "--threshold" )
         threshold = std::stof(value);
       if ( option == "-p" || option == "--lowpass" )
-        lowpass = std::stof(value);
+        lp_string = value;
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
       if ( option == "-k" || option == "--configuration" )
@@ -111,6 +113,8 @@ int main (int argc, char** argv)
   std::ifstream datafile (Run_config_in.c_str());
   std::string line;
   Int_t config,run;
+  lowpass = std::stof(lp_string);
+
   
   if (datafile.is_open())
     {
@@ -163,6 +167,7 @@ int main (int argc, char** argv)
   filenameTail+="_Results";	
   filename += outputdir; 
   filename += filenameTail; 
+	  if()
   filename += ".root";
  	 } 
 	
