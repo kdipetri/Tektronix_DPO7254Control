@@ -169,7 +169,7 @@ int main (int argc, char** argv)
  	 } 
 	
 else {
-  TString filenameTail("SCAN");
+  TString filenameTail("CFDscan");
   filenameTail+="_";	
   filenameTail+=namesensor;
   filenameTail+="_Ch";	
