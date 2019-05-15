@@ -145,9 +145,10 @@ int main (int argc, char** argv)
 
   TimingAnalysis example_analyzeData(input_tree);
 
-  // Output file	
+  // Output file
+  if(cfd_threshold >=0){	
   float cfd_tmp =0 ;
-  cfd_tmp = cfd_threshold * 100; 
+  cfd_tmp = std::abs(cfd_threshold * 100); 
   std::string cfd_string = std::to_string(cfd_tmp);
   cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
   TString filenameTail(cfd_string);
@@ -162,9 +163,27 @@ int main (int argc, char** argv)
   std::string filename; 
   filename += outputdir; 
   filename += filenameTail; 
-  filename += ".root";  
+  filename += ".root";
 
   TFile * f_root = new TFile (filename.c_str(),"RECREATE");
+ 	 } 
+	
+else {
+  TString filenameTail("SCAN");
+  filenameTail+="_";	
+  filenameTail+=namesensor;
+  filenameTail+="_Ch";	
+  filenameTail+=firstchannel;
+  filenameTail+="vsCh";
+  filenameTail+=secondchannel;
+  filenameTail+="_Results";	
+  std::string filename; 
+  filename += outputdir; 
+  filename += filenameTail; 
+  filename += ".root";
+
+  TFile * f_root = new TFile (filename.c_str(),"RECREATE");
+	}
 			
   bool empty=false;
   bool full=false;
