@@ -121,7 +121,7 @@ int main (int argc, char** argv)
 		{
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
-	//       		  std::cout<<path<<std::endl;
+	       		  std::cout<<path<<std::endl;
 
 		  try {
 			  TChain chain_tmp("pulse"); 
