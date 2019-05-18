@@ -123,13 +123,18 @@ int main (int argc, char** argv)
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
 	//       		  std::cout<<path<<std::endl;
 
-		  TChain chain_tmp("pulse"); 
-		  chain_tmp.Add(path);
-		  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
-		  for( size_t i = 0; i < n; ++ i ) {
-		    TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
-		    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker!=0))
-			    addfile = true;
+		  try {
+			  TChain chain_tmp("pulse"); 
+			  chain_tmp.Add(path);
+			  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
+			  for( size_t i = 0; i < n; ++ i ) {
+			    TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
+			    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker!=0))
+				    addfile = true;
+			  }
+		  } catch ( const std::exception& e ){
+			  std::cout << e.what();
+			  addfile = false;
 		  }
 	     if (addfile) {
 	       std::cout << "Adding file :: "<<path<<std::endl;
