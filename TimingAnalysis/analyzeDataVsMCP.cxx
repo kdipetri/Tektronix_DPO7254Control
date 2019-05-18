@@ -121,7 +121,7 @@ int main (int argc, char** argv)
 		{
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
-      		  std::cout<<path<<std::endl;
+//       		  std::cout<<path<<std::endl;
 		 			
 		  TChain chain_tmp("pulse"); 
 		  chain_tmp.Add(path);
@@ -132,12 +132,14 @@ int main (int argc, char** argv)
 			    addfile = true;
 			    std::cout << "nback and npix found"<<std::endl;
 		            }
-	     if (addfile) input_tree->Add(path);
+	     if (addfile) {
+	       std::cout << "Adding file :: "<<path<<std::endl;
+	       input_tree->Add(path);}
 	}
     }
   }
+ }
 }
-  }
   
   // Creating the analysis object from data TTree
   //TFile * input_file = new TFile(filename.c_str());
