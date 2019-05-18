@@ -124,7 +124,7 @@ int main (int argc, char** argv)
       		  std::cout<<path<<std::endl;
 		 			
 		  TChain chain_tmp("pulse"); 
-		  chain_tmp.Add(path)
+		  chain_tmp.Add(path);
 		  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
 		  for( size_t i = 0; i < n; ++ i ) {
 	            TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
