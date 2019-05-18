@@ -130,7 +130,6 @@ int main (int argc, char** argv)
 	            TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
 	            if( (subbr->GetName() == "nback") == (selectOnlyNewTracker==0)){
 			    addfile = true;
-			    std::cout << "nback and npix found"<<std::endl;
 		            }
 	     if (addfile) {
 	       std::cout << "Adding file :: "<<path<<std::endl;
