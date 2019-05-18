@@ -54,6 +54,7 @@ int main (int argc, char** argv)
         std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
         std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
 	std::cout << "-n [ --namesensor ]               name of the sensor and board" << std::endl;
+	std::cout << "-y [ --newtracker ]               select if the run has nback && npix" << std::endl;
 	return 0;
       }
       std::string value(argv[++i]);
@@ -84,6 +85,8 @@ int main (int argc, char** argv)
         firstchannel = std::stoi(value);
       if ( option == "-n" || option == "--namesensor" )
         namesensor = (value);
+      if ( option == "-y" || option == "--newtracker" )
+        selectOnlyNewTracker = std::stoi(value);
     }
   }
 
@@ -108,31 +111,30 @@ int main (int argc, char** argv)
 	{
 	  if ((line.at(0)>='0' && line.at(0)<='9'))
 	    {
-      std::stringstream iss(line);
-      Int_t run;
-      iss>>run>>config; 
-      
+	        std::stringstream iss(line);
+	        Int_t run;
+	        iss>>run>>config; 
+		bool addfile = False;
+		  
 		if (config == configuration)
 		{
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
       		  std::cout<<path<<std::endl;
-			
-					
-    TChain chain_tmp("pulse"); 
-    chain_tmp.Add(path)
-    size_t n = chain_tmp.GetListOfBranches()->GetEntries();
-    for( size_t i = 0; i < n; ++ i ) {
-       TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
-       cout << "  Its sub-branch \"" << subbr->GetName() << "\" takes " << sizeOnDisk(subbr,true) << " bytes on disk\n";
+		 			
+		  TChain chain_tmp("pulse"); 
+		  chain_tmp.Add(path)
+		  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
+		  for( size_t i = 0; i < n; ++ i ) {
+	            TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
+	            if( (subbr->GetName() == "nback") == (selectOnlyNewTracker==0)){
+			    addfile = True;
+			    std::cout << "nback and npix found"<<std::endl;
+    		}
+	     if (addfile) input_tree->Add(path);
+	}
+    }
   }
-			
-	
-			
-			input_tree->Add(path);
-		}
-  }
- }
 }
 
   
