@@ -128,7 +128,7 @@ int main (int argc, char** argv)
 		  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
 		  for( size_t i = 0; i < n; ++ i ) {
 		    TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
-		    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker==0))
+		    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker!=0))
 			    addfile = true;
 		  }
 	     if (addfile) {
