@@ -132,8 +132,8 @@ int main (int argc, char** argv)
 			    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker!=0))
 				    addfile = true;
 			  }
-		  } catch ( const std::exception& e ){
-			  std::cout << e.what();
+		  } catch ( ... ){
+			  std::cout << "Exception!\n";
 			  addfile = false;
 		  }
 	     if (addfile) {
