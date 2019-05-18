@@ -122,8 +122,8 @@ int main (int argc, char** argv)
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
 	       		  std::cout<<path<<std::endl;
-
-		  try {
+		  TFile *f_tmp = new TFile(path);
+		  if (f_tmp != nullptr) {
 			  TChain chain_tmp("pulse"); 
 			  chain_tmp.Add(path);
 			  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
@@ -132,9 +132,7 @@ int main (int argc, char** argv)
 			    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker!=0))
 				    addfile = true;
 			  }
-		  } catch ( ... ){
-			  std::cout << "Exception!\n";
-			  addfile = false;
+			  delete f_tmp;
 		  }
 	     if (addfile) {
 	       std::cout << "Adding file :: "<<path<<std::endl;
