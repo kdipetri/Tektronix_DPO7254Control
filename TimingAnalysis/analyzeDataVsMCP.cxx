@@ -20,6 +20,7 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
+  int selectOnlyNewTracker = 0; 
   
   std::string Run_config_in;
   int configuration = 0; 
@@ -114,7 +115,7 @@ int main (int argc, char** argv)
 	        std::stringstream iss(line);
 	        Int_t run;
 	        iss>>run>>config; 
-		bool addfile = False;
+		bool addfile = false;
 		  
 		if (config == configuration)
 		{
@@ -128,15 +129,15 @@ int main (int argc, char** argv)
 		  for( size_t i = 0; i < n; ++ i ) {
 	            TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
 	            if( (subbr->GetName() == "nback") == (selectOnlyNewTracker==0)){
-			    addfile = True;
+			    addfile = true;
 			    std::cout << "nback and npix found"<<std::endl;
-    		}
+		            }
 	     if (addfile) input_tree->Add(path);
 	}
     }
   }
 }
-
+  }
   
   // Creating the analysis object from data TTree
   //TFile * input_file = new TFile(filename.c_str());
