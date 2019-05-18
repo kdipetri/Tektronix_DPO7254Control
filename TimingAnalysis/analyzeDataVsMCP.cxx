@@ -93,22 +93,8 @@ int main (int argc, char** argv)
     return 0;
   }
 	
-     //16ch 8E14 configuration64
      TChain* input_tree = new TChain("pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11104_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11107_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11109_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11112_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11118_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11120_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope11121_converted.root/pulse");
- 
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7182_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7183_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7185_converted.root/pulse");
-//       input_tree->Add("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimigDAQRECO/RecoWithTracks/v1/run_scope7187_converted.root/pulse");
-    
-	
+
 
   std::ifstream datafile (Run_config_in.c_str());
   std::string line;
@@ -131,7 +117,19 @@ int main (int argc, char** argv)
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
       		  std::cout<<path<<std::endl;
-		  input_tree->Add(path);
+			
+					
+    TChain chain_tmp("pulse"); 
+    chain_tmp.Add(path)
+    size_t n = chain_tmp.GetListOfBranches()->GetEntries();
+    for( size_t i = 0; i < n; ++ i ) {
+       TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
+       cout << "  Its sub-branch \"" << subbr->GetName() << "\" takes " << sizeOnDisk(subbr,true) << " bytes on disk\n";
+  }
+			
+	
+			
+			input_tree->Add(path);
 		}
   }
  }
