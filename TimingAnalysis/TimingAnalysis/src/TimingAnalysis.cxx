@@ -5,7 +5,9 @@
 
 //----------constructor-----------//
 
-TimingAnalysis::TimingAnalysis(TTree * tree): pulse(tree) {}
+TimingAnalysis::TimingAnalysis(TTree * tree): pulse(tree, const bool selectOnlyNewTracker=false, const float minTrackerX=-1e9, const float maxTrackerX=1e9, const float minTrackerY=-1e9, const float maxTrackerY=1e9):
+selectOnlyNewTracker(selectOnlyNewTracker), minTrackerX(minTrackerX), maxTrackerX(maxTrackerX), minTrackerY(minTrackerY), maxTrackerY(maxTrackerY)
+{}
 
 //----------analysis methods------------//
 
