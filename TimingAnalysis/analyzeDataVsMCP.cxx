@@ -20,6 +20,10 @@ int main (int argc, char** argv)
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
+  float minTrackerX=0;
+  float maxTrackerX=0;
+  float minTrackerY=0;
+  float maxTrackerY=0;
   int selectOnlyNewTracker = 0; 
   
   std::string Run_config_in;
