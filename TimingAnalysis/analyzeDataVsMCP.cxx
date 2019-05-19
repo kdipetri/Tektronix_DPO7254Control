@@ -111,11 +111,12 @@ int main (int argc, char** argv)
 	
      TChain* input_tree = new TChain("pulse");
 
-
+  std::string newTracker_string = std::to_string(selectOnlyNewTracker);
   std::ifstream datafile (Run_config_in.c_str());
   std::string line;
   Int_t config,run;
   lowpass = std::stof(lp_string);
+
 
   
   if (datafile.is_open())
@@ -180,6 +181,8 @@ int main (int argc, char** argv)
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
+  filenameTail+="_nback::";
+  filenameTail+=newTracker_string; 
   filenameTail+="_filter";
    if(lowpass >= 0)   {
 	  filenameTail+=lp_string;
@@ -199,6 +202,8 @@ else {
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
+  filenameTail+="_nback::";
+  filenameTail+=newTracker_string; 
   filenameTail+="_filter";
    if(lowpass >= 0)   {
 	  filenameTail+=lp_string;
