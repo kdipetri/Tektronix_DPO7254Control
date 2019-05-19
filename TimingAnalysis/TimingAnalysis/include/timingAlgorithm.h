@@ -111,10 +111,15 @@ struct AlgorithmParameters{
 
   float errorOnSigma;
   float sigmaOfCh1Amplitude;
+  
+  float minTrackerX;
+  float maxTrackerX;
+  float minTrackerY;
+  float maxTrackerY;
 
 
 
-  AlgorithmParameters(const double cfdRatio_ch0, const double cfdRatio_ch1, const double threshold_ch0=.0, const double threshold_ch1=.0, const double sigma=0, const double hysteresis=1e-3, const double minCh0=-10., const double maxCh0=10., const double minCh1=-10., const double maxCh1=10., const double baseline_n=0.15): cfdRatio_ch0(cfdRatio_ch0), cfdRatio_ch1(cfdRatio_ch1), polarity(polarity), threshold_ch0(threshold_ch0), threshold_ch1(threshold_ch1), counter(0), rangeMin_ch0(minCh0), rangeMax_ch0(maxCh0), rangeMin_ch1(minCh1), rangeMax_ch1(maxCh1), maximum(0), plot(true), sigma(sigma), hysteresis(hysteresis), timeOverThreshold(0), baseline_n(baseline_n), baseline(.0), baseline_rms(.0), risetime(.0), referenceTime(.0), thresholdTime(.0), found(0), rejectedCounter(0), detectorNumber(-1), errorOnSigma(0), sigmaOfCh1Amplitude(0) {};
+  AlgorithmParameters(const double cfdRatio_ch0, const double cfdRatio_ch1, const double threshold_ch0=.0, const double threshold_ch1=.0, const double sigma=0, const double hysteresis=1e-3, const double minCh0=-10., const double maxCh0=10., const double minCh1=-10., const double maxCh1=10., const double baseline_n=0.15, const float minTrackerX=-1e9, const float maxTrackerX=1e9, const float minTrackerY=-1e9, const float maxTrackerY=1e9): cfdRatio_ch0(cfdRatio_ch0), cfdRatio_ch1(cfdRatio_ch1), polarity(polarity), threshold_ch0(threshold_ch0), threshold_ch1(threshold_ch1), counter(0), rangeMin_ch0(minCh0), rangeMax_ch0(maxCh0), rangeMin_ch1(minCh1), rangeMax_ch1(maxCh1), maximum(0), plot(true), sigma(sigma), hysteresis(hysteresis), timeOverThreshold(0), baseline_n(baseline_n), baseline(.0), baseline_rms(.0), risetime(.0), referenceTime(.0), thresholdTime(.0), found(0), rejectedCounter(0), detectorNumber(-1), errorOnSigma(0), sigmaOfCh1Amplitude(0), minTrackerX(minTrackerX), maxTrackerX(maxTrackerX), minTrackerY(minTrackerY), maxTrackerY(maxTrackerY) {};
 };
 
 double PreProcess(std::vector<double>& time, std::vector<double>& data, AlgorithmParameters& param) {
