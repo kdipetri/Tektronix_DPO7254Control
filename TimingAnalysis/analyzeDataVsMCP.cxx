@@ -88,6 +88,14 @@ int main (int argc, char** argv)
         namesensor = (value);
       if ( option == "-y" || option == "--newtracker" )
         selectOnlyNewTracker = std::stoi(value);
+      if ( option == "--xmin")
+	    minTrackerX = std::stof(value);
+      if ( option == "--xmax")
+	    maxTrackerX = std::stof(value);
+      if ( option == "--ymin")
+	    minTrackerY = std::stof(value);
+      if ( option == "--ymax")
+	    maxTrackerY = std::stof(value);
     }
   }
 
@@ -153,7 +161,7 @@ int main (int argc, char** argv)
   if (input_tree->GetEntries() < 1000) return 0;
   else std::cout<<"SELECTED: "<< namesensor << std::endl;
 
-  TimingAnalysis example_analyzeData(input_tree);
+  TimingAnalysis example_analyzeData(input_tree, selectOnlyNewTracker, minTrackerX, maxTrackerX, minTrackerY, maxTrackerY);
 
   // Output file
   if(cfd_threshold >=0){	
