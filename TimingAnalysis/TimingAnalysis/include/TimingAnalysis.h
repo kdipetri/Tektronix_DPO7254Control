@@ -139,7 +139,7 @@ class TimingAnalysis : public pulse
 
   public :
 
-    TimingAnalysis(TTree * tree=0);
+    TimingAnalysis(TTree * tree=0, const bool selectOnlyNewTracker=false, const float minTrackerX=-1e9, const float maxTrackerX=1e9, const float minTrackerY=-1e9, const float maxTrackerY=1e9);
 
     void initialize();
 
@@ -411,25 +411,12 @@ class TimingAnalysis : public pulse
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
+		bool selected = (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9)
+		if (selectOnlyNewTracker_)
+			selected = selected && (nplanes>=19 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1)
+		else selected = selected && (npix>0 && nback>0 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1)
 
-                //NO GEOMETRICAL CUT        
-//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntracks == 1 && nplanes>=19 && amp[3] < 80 && amp[3] > 30) {
-
-
-                //Adding geometrical cut for new trees(nback > 0, npix > 0)
-//config81              
-//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntracks == 1 && npix > 0 && nback > 0 && x_dut[2] > 16.3 && x_dut[2] < 19 && y_dut[2] > 34.8 && y_dut[2] < 35.5 && amp[3] < 180 && amp[3] > 110) {
-
-//config87              
-//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && ntracks == 1 && npix > 0 && nback > 0 && x_dut[2] > 13.3 && x_dut[2] < 15.9 && y_dut[2] > 33.95 && y_dut[2] < 34.6 && amp[3] < 80 && amp[3] > 30) {
-
-
-                //Geometrical cut for old trees(no nback or npix, nplanes>=19, ntracks==1)      
-//config26            
-//if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nback > 0 && npix > 0 && x_dut[2] > 7.88 && x_dut[2] < 8.105 && y_dut[2] > 19.4 && y_dut[2] < 22 && amp[3] < 180 && amp[3] > 110 && ntracks == 1) {
-
-//config24            
-if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nplanes>=19 && x_dut[0] > 8.2 && x_dut[0] < 8.7 && y_dut[0] > 19.5 && y_dut[2] < 21.5 && amp[3] > 120 && amp[3] < 170 && ntracks == 1) {
+		if (selected) {
 	     
 	    if (T_Sample_A!=-1 && T_Sample_B!=-1) {
               time_reference = (Int_t) (1e12 * T_Sample_A);
@@ -708,6 +695,12 @@ if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9 && nplanes>=19 
 
     //clock
     TStopwatch m_timer;
+    bool selectOnlyNewTracker_;
+    float minTrackerX_;
+    float maxTrackerX_;
+    float minTrackerY_;
+    float maxTrackerY_;
+    
 
 };
 
