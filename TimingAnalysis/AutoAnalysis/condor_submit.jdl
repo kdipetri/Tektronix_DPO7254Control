@@ -1,0 +1,11 @@
+executable = AutoAnalyzer.py
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+arguments =  $(ProcId) 1 
+output = condorLogs/run_$(ProcId).out
+error = condorLogs/run_$(ProcId).err
+log = condorLogs/run_$(ProcId).log
+
+request_cpus=1
++Requirements = OpSysAndVer =?= "SLC6" 
+queue 10
