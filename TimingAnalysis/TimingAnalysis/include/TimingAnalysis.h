@@ -411,10 +411,10 @@ class TimingAnalysis : public pulse
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
-		bool selected = (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9)
+		bool selected = (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9);
 		if (selectOnlyNewTracker_)
-			selected = selected && (nplanes>=19 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1)
-		else selected = selected && (npix>0 && nback>0 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1)
+			selected = selected && (nplanes>=19 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
+		else selected = selected && (npix>0 && nback>0 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
 
 		if (selected) {
 	     
