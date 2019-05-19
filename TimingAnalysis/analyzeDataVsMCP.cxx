@@ -173,9 +173,9 @@ int main (int argc, char** argv)
   cfd_tmp = std::abs(cfd_threshold * 100); 
   std::string cfd_string = std::to_string(cfd_tmp);
   cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
-  TString filenameTail(cfd_string);
-  filenameTail+=namesensor;
-  filenameTail+="_CFD";		
+  TString filenameTail(namesensor);
+  filenameTail+="_CFD";	
+  filenameTail+=cfd_string;
   filenameTail+="_Ch";	
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
