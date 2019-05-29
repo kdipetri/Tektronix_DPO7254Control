@@ -1,3 +1,4 @@
+#!/cvmfs/sft.cern.ch/lcg/views/LCG_93python3/x86_64-slc6-gcc62-opt/bin/python3
 import os
 import csv
 import sys
@@ -22,14 +23,15 @@ with open("April2019_geomCuts.csv") as csv_file:
             xmax = content[6]
             ymin = content[7]
             ymax = content[8]
-            DUT_threshold = content[9]
-            DUT_saturation = content[10]
-            MCPthreshold = content[11]
-            MCPsaturation = content[12]
+            DUT_threshold = 0 - float(content[9])*1e-3
+            DUT_saturation = float(content[10])*1e-3
+            MCPthreshold = 0 - float(content[11])*1e-3
+            MCPsaturation = float(content[12])*1e-3
             CFD = content[15]
             filter = content[16]
 
             DUTName = f'{sensor}_{board}'
+            #outputDir = sys.argv[3]
             outputDir = f'./Results/config{configNumber}/'
             try:
                 os.stat(outputDir[:-1])
@@ -39,3 +41,4 @@ with open("April2019_geomCuts.csv") as csv_file:
             s = f'../analyzeDataVsMCP -i {input_configFile} -f {DUTchannel} -k {configNumber} -t {DUT_threshold} -s {DUT_saturation} -c {CFD} --MCPthreshold {MCPthreshold} --lowpass {filter} -n {DUTName} -o {outputDir} -y {NewTracker} --xmin {xmin} --xmax {xmax} --ymin {ymin} --ymax {ymax} --MCPsaturation {MCPsaturation}'
             print(s)
             subprocess.run(s,shell=True)
+
