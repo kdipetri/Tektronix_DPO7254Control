@@ -1,11 +1,12 @@
-executable = AutoAnalyzer.py
+getenv = True
+environment = "X509_USER_PROXY=\$ENV(HOME)/x509up_u\$ENV(UID)"
+requirements = (OpSysAndVer =?= "CentOS7")
+executable  = /uscms/home/tisidori/TestBeamApril2019/Tektronix_DPO7254Control/TimingAnalysis/AutoAnalysis/sender.sh
+output      = /uscms/home/tisidori/TestBeamApril2019/Tektronix_DPO7254Control/TimingAnalysis/AutoAnalysis/condor/runana_condor.out
+error       = /uscms/home/tisidori/TestBeamApril2019/Tektronix_DPO7254Control/TimingAnalysis/AutoAnalysis/condor/runana_condor.err
+log         = /uscms/home/tisidori/TestBeamApril2019/Tektronix_DPO7254Control/TimingAnalysis/AutoAnalysis/condor/runana_condor.log
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-arguments =  $(ProcId) 1 
-output = condorLogs/run_$(ProcId).out
-error = condorLogs/run_$(ProcId).err
-log = condorLogs/run_$(ProcId).log
 
-request_cpus=1
-+Requirements = OpSysAndVer =?= "SLC6" 
-queue 10
+arguments = 1 0
+queue
