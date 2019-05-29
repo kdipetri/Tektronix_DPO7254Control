@@ -474,7 +474,7 @@ class TimingAnalysis : public pulse
         	bidimHistogramN.SetBinContent(itx,bidimHistogramVec.at(itx)->GetEntries());
         }
 	
-	std::cout<< "QUI1"<<endl;
+	//std::cout<< "QUI1"<<endl;
         g_correctionsX.Write();
         g_correctedX.Write();
         g_correctionsY.Write();
@@ -536,7 +536,7 @@ class TimingAnalysis : public pulse
         g_tot_ch0.Write();
         g_tot_ch1.Write();
         out_f->Write();
-	std::cout<< "QUI2"<<endl;
+	//std::cout<< "QUI2"<<endl;
         // outTreeFile.Write();
         m_timer.Stop();
         std::cout << "********************************" << std::endl;
@@ -547,7 +547,7 @@ class TimingAnalysis : public pulse
         return gausDt2.GetParameter(2);
     }
 
-   	std::cout<< "QUI3"<<endl;	
+   	//std::cout<< "QUI3"<<endl;	
 
     template <class T>
     double executeAll(TFile * out_f, double (*computeExactTime) (std::vector<double>&, std::vector<double>&, T&), T& parameters) {
@@ -641,7 +641,7 @@ class TimingAnalysis : public pulse
       	it->second.h_max->Scale(1./it->second.h_max->GetMaximum());
       	it->second.h_risetime->Scale(1./it->second.h_risetime->GetMaximum());
       }
-	std::cout<< "QUI4"<<endl;
+	//std::cout<< "QUI4"<<std::endl;
       out_f->cd();
       TH1D* allRates = new TH1D("allRates","allRates",32,0,32);
       TH1D* meanNOfPeaks = new TH1D("meanNOfPeaks","meanNOfPeaks",32,0,32);
