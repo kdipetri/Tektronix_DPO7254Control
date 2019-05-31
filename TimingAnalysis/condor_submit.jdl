@@ -1,0 +1,14 @@
+getenv = True
+requirements = (OpSysAndVer =?= "CentOS7")
+executable  = /afs/cern.ch/user/n/nminafra/Work/Tommaso/Tektronix_DPO7254Control/TimingAnalysis/AutoAnalyzer.py
+output      = /afs/cern.ch/user/n/nminafra/Work/Tommaso/Tektronix_DPO7254Control/TimingAnalysis/condor/run_$(ProcId).out
+error       = /afs/cern.ch/user/n/nminafra/Work/Tommaso/Tektronix_DPO7254Control/TimingAnalysis/condor/run_$(ProcId).err
+log         = /afs/cern.ch/user/n/nminafra/Work/Tommaso/Tektronix_DPO7254Control/TimingAnalysis/condor/run_$(ProcId).log
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = AutoAnalyzer.py, analyzeDataVsMCP, April2019_geomCuts.csv
+
++JobFlavour = "espresso"
+
+arguments = 1 1
+queue
