@@ -182,7 +182,7 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
   filenameTail+=firstchannel;
   filenameTail+="vsCh";
   filenameTail+=secondchannel;
-  filenameTail+="_nback::";
+  filenameTail+="_nback";
   filenameTail+=newTracker_string;
   filenameTail+="_filter";
    if(lowpass >= 0)   {
@@ -223,6 +223,10 @@ else {
   bool low=false;
 
   std::cout<<"Filling "<<filename<<" with "<<filename<<std::endl;
+  TString filename_log(filename);
+  filename += ".log";
+  std::ofstream logfile(filename, std::ofstream::out);
+  logfile<<"File created with name: "<<filename<<std::endl;
 
   bool channelScan=true;
   int secondchannel_local = 0;
@@ -334,6 +338,8 @@ else {
 
 
   f_root->Close();
+  logfile << "Closing...\n";
+  logfile.close();
 
   // if (empty || full || low) {
   //   std::string newfilename(filename);
