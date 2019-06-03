@@ -5,17 +5,31 @@
 #include <TGraph2DErrors.h>
 #include <TTree.h>
 #include <cstdio>
+#include <fstream>
 
 int main (int argc, char** argv)
 {
-  std::string filename("");
-  std::string outputdir("./Results");
+//   std::string filename;
+  std::string namesensor;
+  std::string filename;
+  std::string lp_string;
+  std::string outputdir("./Results/");
   int firstchannel=3; //MCP
   int secondchannel=0;
   float cfd_threshold=0.4;
   float threshold_MCP=-0.01;
   float threshold=-0.01;
   float lowpass=0;
+  float minTrackerX=0;
+  float maxTrackerX=0;
+  float minTrackerY=0;
+  float maxTrackerY=0;
+  int selectOnlyNewTracker = 0;
+
+  std::string Run_config_in;
+  int configuration = 0;
+
+
 
   // Additional parameters
   float hysteresis=0.3e-3;
@@ -34,6 +48,7 @@ int main (int argc, char** argv)
         std::cout << "List of options: " << std::endl;
         std::cout << "-h [ --help ]                     produce help message" << std::endl;
         std::cout << "-f [ --channel ] (=0)             channel to analyze" << std::endl;
+        std::cout << "-k [ --configuration ]       Global congif to analyze" << std::endl;
         std::cout << "-c [ --cfd_threshold ] (=0.4)     CFD fraction" << std::endl;
         std::cout << "                                  a negative value will start a scan with" << std::endl;
         std::cout << "                                  a step equal to |cfd_threshold|" << std::endl;
@@ -41,26 +56,30 @@ int main (int argc, char** argv)
         std::cout << "                                  negative signals (V)" << std::endl;
         std::cout << "-p [ --lowpass ] (=0)             Lowpass filter frequency (Hz)" << std::endl;
         std::cout << "-o [ --outputdir ] (=./Results)   output directory" << std::endl;
-        std::cout << "-i [ --filename ]                 input file" << std::endl;
+        std::cout << "-i [ --Run_config_in ]            Run_config.txt input file" << std::endl;
         std::cout << "-s [ --saturation ] (=0.2)        saturation cut for DUT" << std::endl;
-        return 0;
+	std::cout << "-n [ --namesensor ]               name of the sensor and board" << std::endl;
+	std::cout << "-y [ --newtracker ]               select if the run has nback && npix" << std::endl;
+	return 0;
       }
       std::string value(argv[++i]);
 
       if ( option == "-f" || option == "--channel" )
         secondchannel = std::stoi(value);
-      if ( option == "-i" || option == "--filename" )
-        filename = value;
+      if ( option == "-i" || option == "--Run_cofig_in" )
+        Run_config_in = value;
       if ( option == "-c" || option == "--cfd_threshold" )
         cfd_threshold = std::stof(value);
       if ( option == "-t" || option == "--threshold" )
         threshold = std::stof(value);
       if ( option == "-p" || option == "--lowpass" )
-        lowpass = std::stof(value);
+        lp_string = value;
       if ( option == "-o" || option == "--outputdir" )
         outputdir = value;
-      if ( option == "-i" || option == "--filename" )
-        filename = value;
+      if ( option == "-k" || option == "--configuration" )
+        configuration = std::stoi(value);
+     // if ( option == "-i" || option == "--filename" )
+       // filename = value;
       if ( option == "-s" || option == "--saturation" )
         max_amplitude_ch2 = std::stof(value);
       if ( option == "--MCPsaturation" )
@@ -69,33 +88,135 @@ int main (int argc, char** argv)
         threshold_MCP = std::stof(value);
       if ( option == "--MCPchannel" )
         firstchannel = std::stoi(value);
+      if ( option == "-n" || option == "--namesensor" )
+        namesensor = (value);
+      if ( option == "-y" || option == "--newtracker" )
+        selectOnlyNewTracker = std::stoi(value);
+      if ( option == "--xmin")
+	    minTrackerX = std::stof(value);
+      if ( option == "--xmax")
+	    maxTrackerX = std::stof(value);
+      if ( option == "--ymin")
+	    minTrackerY = std::stof(value);
+      if ( option == "--ymax")
+	    maxTrackerY = std::stof(value);
     }
   }
 
-  if (filename == "") {
-    std::cout << "Input file required! For help use:" << std::endl;
+std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
+  if (Run_config_in == "") {
+    std::cout << "Input Run_ config.txt file required! For help use:" << std::endl;
     std::cout << argv[0] << " --help" << std::endl;
     return 0;
   }
 
+     TChain* input_tree = new TChain("pulse");
+
+  std::string newTracker_string = std::to_string(selectOnlyNewTracker);
+  std::ifstream datafile (Run_config_in.c_str());
+  std::string line;
+  Int_t config,run;
+  lowpass = std::stof(lp_string);
+
+
+
+  if (datafile.is_open())
+    {
+      while ( getline (datafile,line) )
+	{
+	  if ((line.at(0)>='0' && line.at(0)<='9'))
+	    {
+	        std::stringstream iss(line);
+	        Int_t run;
+	        iss>>run>>config;
+		bool addfile = false;
+
+		if (config == configuration)
+		{
+		  TString path;
+		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
+	       		  std::cout<<"Searching File: "<<path<<std::endl;
+		  TString path2 = path.Remove(path.Length()-6,6);
+		  TFile *f_tmp = TFile::Open(path2);
+		  if (f_tmp != nullptr) {
+			  TChain chain_tmp("pulse");
+			  chain_tmp.Add(path);
+			  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
+			  for( size_t i = 0; i < n; ++ i ) {
+			    TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
+			    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker==0))
+				    addfile = true;
+			  }
+			  delete f_tmp;
+		  }
+	     if (addfile) {
+	       std::cout << "Adding file :: "<<path<<std::endl;
+	       input_tree->Add(path);}
+	}
+    }
+  }
+}
+
   // Creating the analysis object from data TTree
-  TFile * input_file = new TFile(filename.c_str());
-  TTree* input_tree = nullptr;
-  input_file->GetObject("pulse",input_tree);
+  //TFile * input_file = new TFile(filename.c_str());
+ // std::cout<<"ok"<<std::endl;
+ // TTree* input_tree = nullptr;
+  //input_tree = chain;
+//   input_file->GetObject("pulse",input_tree);
 
   if (input_tree->GetEntries() < 1000) return 0;
-  else std::cout<<"SELECTED: "<< filename << std::endl;
+  else std::cout<<"SELECTED: "<< namesensor << std::endl;
 
-  TimingAnalysis example_analyzeData(input_tree);
+  TimingAnalysis example_analyzeData(input_tree, selectOnlyNewTracker, minTrackerX, maxTrackerX, minTrackerY, maxTrackerY);
 
   // Output file
-  TString filenameTail("_results_MCP");
+  if(cfd_threshold >=0){
+  float cfd_tmp =0 ;
+  cfd_tmp = std::abs(cfd_threshold * 100);
+  std::string cfd_string = std::to_string(cfd_tmp);
+  cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
+  TString filenameTail(namesensor);
+  filenameTail+="_CFD";
+  filenameTail+=cfd_string;
+  filenameTail+="_Ch";
   filenameTail+=firstchannel;
-  filenameTail+="_";
+  filenameTail+="vsCh";
   filenameTail+=secondchannel;
-  filename.insert(filename.size()-5,filenameTail.Data());
-  filename.erase(0,filename.find_last_of('/',filename.size()));
-  filename.insert(0,outputdir);
+  filenameTail+="_nback::";
+  filenameTail+=newTracker_string;
+  filenameTail+="_filter";
+   if(lowpass >= 0)   {
+	  filenameTail+=lp_string;
+   		}
+   else if (lowpass < 0)  {
+	   filenameTail+="_LPscan";
+   		}
+  filename += outputdir;
+  filename += filenameTail;
+  filename += ".root";
+ 	 }
+
+else {
+  TString filenameTail(namesensor);
+  filenameTail+="_CFDscan";
+  filenameTail+="_Ch";
+  filenameTail+=firstchannel;
+  filenameTail+="vsCh";
+  filenameTail+=secondchannel;
+  filenameTail+="_nback::";
+  filenameTail+=newTracker_string;
+  filenameTail+="_filter";
+   if(lowpass >= 0)   {
+	  filenameTail+=lp_string;
+   		}
+   else if (lowpass < 0)  {
+	   filenameTail+="_LPscan";
+   		}
+  filename += outputdir;
+  filename += filenameTail;
+  filename += ".root";
+	}
+
   TFile * f_root = new TFile (filename.c_str(),"RECREATE");
   bool empty=false;
   bool full=false;

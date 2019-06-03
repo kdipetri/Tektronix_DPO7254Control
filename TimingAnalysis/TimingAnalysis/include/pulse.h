@@ -59,7 +59,9 @@ public :
    Float_t         y_dut[3];
    Float_t         chi2;
    Int_t           ntracks;
-   Int_t           nplanes;
+   Int_t           nplanes;  //for the old tree. Uses the group of strips + pixels. Standard cut (if every stages was on):: nplanes>=19
+   Int_t           npix; //implemented for the new ttree. Uses the pixels for the tracking. Standard cut:: npix > 0
+   Int_t           nback; //implemented for the new ttree. Uses the strip on the back of the DUT for the tracking. Standard cut:: nback > 0
 
    // List of branches
    TBranch        *b_i_evt;   //!
@@ -119,13 +121,23 @@ pulse::pulse(TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
-  if (tree == 0) 
-  {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("run_scope7729_converted.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("run_scope7729_converted.root");
-      }
-      f->GetObject("pulse",tree);Init
+if (tree == 0) {
+//   {
+//       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("run_scope7729_converted.root");
+//       if (!f || !f->IsOpen()) {
+//          f = new TFile("run_scope7729_converted.root");
+//       }
+//       f->GetObject("pulse",tree);Init
+
+  TChain *chain = new TChain("pulse","");
+     chain->Add("../v1/run_scope7188_converted.root/pulse");
+      chain->Add("../v1/run_scope7190_converted.root/pulse");
+      chain->Add("../v1/run_scope7192_converted.root/pulse");
+      chain->Add("../v1/run_scope7193_converted.root/pulse");
+      chain->Add("../v1/run_scope7195_converted.root/pulse");
+      chain->Add("../v1/run_scope7197_converted.root/pulse");
+      chain->Add("../v1/run_scope7199_converted.root/pulse");
+tree=chain;
    }
    Init(tree);
 }

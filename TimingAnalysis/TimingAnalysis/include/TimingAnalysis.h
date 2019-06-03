@@ -139,7 +139,7 @@ class TimingAnalysis : public pulse
 
   public :
 
-    TimingAnalysis(TTree * tree=0);
+    TimingAnalysis(TTree * tree=0, const bool selectOnlyNewTracker=false, const float minTrackerX=-1e9, const float maxTrackerX=1e9, const float minTrackerY=-1e9, const float maxTrackerY=1e9);
 
     void initialize();
 
@@ -191,8 +191,8 @@ class TimingAnalysis : public pulse
       TH1D h_baseline_Det1("h_baseline_Det1","Baseline of DUT; V",200,-0.01,0.01);
       TH1D h_pedestal_Det0("h_pedestal_Det0","Pedestal (RMS before pulse) of MCP; V",1000,-0.1,0.1);
       TH1D h_pedestal_Det1("h_pedestal_Det1","Pedestal (RMS before pulse) of DUT; V",1000,-0.1,0.1);
-      TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",150,0,150);
-      TH1D h_SNR_Det1("h_SNR_Det1","SNR of DUT; SNR",150,0,150);
+      TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",320,0,500);
+      TH1D h_SNR_Det1("h_SNR_Det1","SNR of DUT; SNR",160,0,180);
 
       TH1D h_risetime_Det0("h_risetime_Det0","Risetime of MCP; rt (s)",200,0,4e-9);
       TH1D h_risetime_Det1("h_risetime_Det1","Risetime of DUT; rt (s)",200,0,4e-9);
@@ -268,6 +268,7 @@ class TimingAnalysis : public pulse
       // eventNumber=event-1;
 
       Long64_t jentry=0;
+      // nentries = 1000;
       while (jentry<nentries) {
       	if (LoadTree(jentry) < 0) break;
       	fChain->GetEntry(jentry++);
@@ -411,8 +412,14 @@ class TimingAnalysis : public pulse
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
-        	if (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A)<10e-9 ) {
-        	  if (T_Sample_A!=-1 && T_Sample_B!=-1) {
+		bool selected = (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9);
+		if (selectOnlyNewTracker_)
+			selected = selected && (nplanes>=19 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
+		else selected = selected && (npix>0 && nback>0 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
+
+		if (selected) {
+
+	    if (T_Sample_A!=-1 && T_Sample_B!=-1) {
               time_reference = (Int_t) (1e12 * T_Sample_A);
               // outTreeFile.cd();
               // outTree.Fill();
@@ -468,6 +475,7 @@ class TimingAnalysis : public pulse
         	bidimHistogramN.SetBinContent(itx,bidimHistogramVec.at(itx)->GetEntries());
         }
 
+	//std::cout<< "QUI1"<<endl;
         g_correctionsX.Write();
         g_correctedX.Write();
         g_correctionsY.Write();
@@ -505,10 +513,10 @@ class TimingAnalysis : public pulse
         langau1->SetParNames("Width","MP","Area","GSigma");
         // langau1->SetParameters(0.05*parameters.rangeMax_ch0,0.25*parameters.rangeMax_ch0,50,h_pedestal_Det1.GetRMS());
         langau1->SetParameters(0.015,0.015,0.5,h_pedestal_Det1.GetRMS());
-	langau1->SetParLimits(0,0,0.01);
-	langau1->SetParLimits(1,0,0.2);
-	langau1->SetParLimits(2,0,10);
-	langau1->SetParLimits(3,0,0.05);
+	langau1->SetParLimits(0,0,0.01); //Width of the Landau
+	langau1->SetParLimits(1,0,0.2);  //MP Landau
+	langau1->SetParLimits(2,0,100);  //Total Area
+	langau1->SetParLimits(3,0,0.05);  //Width of the convoluted Gaussian
         langau1->SetRange(parameters.rangeMin_ch1,parameters.rangeMax_ch1);
         // langau1->FixParameter(3,h_pedestal_Det0.GetRMS());
         h_max_selected_Det1.Fit(langau1,"RFB");
@@ -529,7 +537,7 @@ class TimingAnalysis : public pulse
         g_tot_ch0.Write();
         g_tot_ch1.Write();
         out_f->Write();
-
+	//std::cout<< "QUI2"<<endl;
         // outTreeFile.Write();
         m_timer.Stop();
         std::cout << "********************************" << std::endl;
@@ -540,7 +548,7 @@ class TimingAnalysis : public pulse
         return gausDt2.GetParameter(2);
     }
 
-
+   	//std::cout<< "QUI3"<<endl;
 
     template <class T>
     double executeAll(TFile * out_f, double (*computeExactTime) (std::vector<double>&, std::vector<double>&, T&), T& parameters) {
@@ -634,7 +642,7 @@ class TimingAnalysis : public pulse
       	it->second.h_max->Scale(1./it->second.h_max->GetMaximum());
       	it->second.h_risetime->Scale(1./it->second.h_risetime->GetMaximum());
       }
-
+	//std::cout<< "QUI4"<<std::endl;
       out_f->cd();
       TH1D* allRates = new TH1D("allRates","allRates",32,0,32);
       TH1D* meanNOfPeaks = new TH1D("meanNOfPeaks","meanNOfPeaks",32,0,32);
@@ -689,6 +697,12 @@ class TimingAnalysis : public pulse
 
     //clock
     TStopwatch m_timer;
+    bool selectOnlyNewTracker_;
+    float minTrackerX_;
+    float maxTrackerX_;
+    float minTrackerY_;
+    float maxTrackerY_;
+
 
 };
 
