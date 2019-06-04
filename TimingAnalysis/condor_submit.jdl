@@ -1,6 +1,5 @@
 getenv = True
 requirements = (OpSysAndVer =?= "CentOS7")
-environment = "X509_USER_PROXY=/afs/cern.ch/user/n/nminafra/x509_proxy"
 executable  = AutoAnalyzer.py
 output      = condor/run_$(ProcId).out
 error       = condor/run_$(ProcId).err

@@ -7,7 +7,7 @@ import subprocess
 
 # To send jobs:
 # $>source /cvmfs/sft.cern.ch/lcg/views/LCG_94python3/x86_64-centos7-gcc62-opt/setup.sh
-# $> voms-proxy-init --valid 192:00 -voms cms --out ~/x509_proxy
+# $> voms-proxy-init --valid 192:00 -voms cms --out x509_proxy
 # modify condor_submit.jdl to point at this file: environment = "X509_USER_PROXY=/afs/cern.ch/user/?/?????/x509_proxy"
 # $> condor_submit condor_submit.jdl
 
@@ -50,8 +50,11 @@ with open("April2019_geomCuts.csv") as csv_file:
 
             s = f'./analyzeDataVsMCP --outputdir {outputDir} -i {input_configFile} -f {DUTchannel} -k {configNumber} -t {DUT_threshold} -s {DUT_saturation} -c {CFD} --MCPthreshold {MCPthreshold} --lowpass {filter} -n {DUTName} -y {NewTracker} --xmin {xmin} --xmax {xmax} --ymin {ymin} --ymax {ymax} --MCPsaturation {MCPsaturation}'
             print(s)
+            subprocess.call('export X509_USER_PROXY=$PWD/x509_proxy',shell=True)
             subprocess.call('voms-proxy-init --voms cms --noregen',shell=True)
             subprocess.call(s,shell=True)
             print("Done!")
+            with open(f'{outputDir}test_{int(sys.argv[1])}_{int(sys.argv[2])}.log','w') as f:
+                f.write("This is a test!")
 
         row_counter += 1
