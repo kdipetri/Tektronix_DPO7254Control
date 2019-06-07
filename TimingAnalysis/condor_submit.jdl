@@ -10,8 +10,6 @@ transfer_input_files = analyzeDataVsMCP, April2019_geomCuts.csv, Run_config.txt
 
 +JobFlavour = "workday"
 
-arguments = $(ProcId) 0
-queue 60
-
-arguments = $(ProcId) 1
-queue 60
+toqueque = 60
+arguments = $(ProcId) $(toqueque)
+queue $(toqueque)

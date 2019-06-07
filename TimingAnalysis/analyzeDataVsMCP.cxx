@@ -129,7 +129,6 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
 	        std::stringstream iss(line);
 	        Int_t run;
 	        iss>>run>>config;
-		bool addfile = false;
 
 		if (config == configuration)
 		{
@@ -138,19 +137,21 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
 	    std::cout<<"Searching File: "<<path<<std::endl;
 		  TString path2 = path.Remove(path.Length()-6,6);
 		  TFile *f_tmp = TFile::Open(path2);
-      f_tmp->ls();
+      if (f_tmp != nullptr) f_tmp->ls();
+      else std::cout<< "File not opened correctly!"<<std::endl;
+      bool nbackfound = false;
 		  if (f_tmp != nullptr) {
 			  TChain chain_tmp("pulse");
 			  chain_tmp.Add(path);
 			  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
 			  for( size_t i = 0; i < n; ++ i ) {
 			    TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
-			    if( (subbr->GetName() == "nback") == (selectOnlyNewTracker==0))
-				    addfile = true;
+			    if (subbr->GetName() == "nback")
+            nbackfound = true;
 			  }
 			  delete f_tmp;
 		  }
-	     if (addfile) {
+	     if (nbackfound == (selectOnlyNewTracker>0)) {
 	       std::cout << "Adding file :: "<<path<<std::endl;
 	       input_tree->Add(path);}
 	}

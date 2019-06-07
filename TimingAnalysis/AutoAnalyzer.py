@@ -7,8 +7,7 @@ import subprocess
 
 # To send jobs:
 # $>source /cvmfs/sft.cern.ch/lcg/views/LCG_94python3/x86_64-centos7-gcc62-opt/setup.sh
-# $> voms-proxy-init --valid 192:00 -voms cms --out x509_proxy
-# modify condor_submit.jdl to point at this file: environment = "X509_USER_PROXY=/afs/cern.ch/user/?/?????/x509_proxy"
+# $> voms-proxy-init --valid 12:00 -voms cms --out x509_proxy
 # $> condor_submit condor_submit.jdl
 
 
@@ -17,7 +16,13 @@ input_configFile = "Run_config.txt"
 
 NewTracker = 0
 if len(sys.argv)>2:
-    NewTracker = int(sys.argv[2])
+    print(f'Arguments: {sys.argv[1]}        {sys.argv[2]}')
+    period = int(sys.argv[2])/2
+    id = int(sys.argv[1])
+    if id >= period:
+        id -= period
+        NewTracker = 1
+    print(f'Using: id {id} with NewTracker {NewTracker}')
 
 with open("April2019_geomCuts.csv") as csv_file:
     print("Opening file")
@@ -26,9 +31,10 @@ with open("April2019_geomCuts.csv") as csv_file:
     for content in csv_reader:
         try:
             float(content[12])
+            row_counter += 1
         except:
             continue
-        if (row_counter == int(sys.argv[1])):
+        if (row_counter-1 == int(sys.argv[1])):
             configNumber = content[0]
             board = content[2]
             DUTchannel = content[3]
@@ -57,5 +63,3 @@ with open("April2019_geomCuts.csv") as csv_file:
             print("Done!")
             # with open(f'{outputDir}test_{int(sys.argv[1])}_{int(sys.argv[2])}.log','w') as f:
             #     f.write("This is a test!")
-
-        row_counter += 1
