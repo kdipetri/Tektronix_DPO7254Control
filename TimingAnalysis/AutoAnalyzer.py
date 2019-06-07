@@ -52,9 +52,10 @@ with open("April2019_geomCuts.csv") as csv_file:
             print(s)
             subprocess.call('export X509_USER_PROXY=$PWD/x509_proxy',shell=True)
             subprocess.call('voms-proxy-init --voms cms --noregen',shell=True)
+            subprocess.call('voms-proxy-info',shell=True)
             subprocess.call(s,shell=True)
             print("Done!")
-            with open(f'{outputDir}test_{int(sys.argv[1])}_{int(sys.argv[2])}.log','w') as f:
-                f.write("This is a test!")
+            # with open(f'{outputDir}test_{int(sys.argv[1])}_{int(sys.argv[2])}.log','w') as f:
+            #     f.write("This is a test!")
 
         row_counter += 1

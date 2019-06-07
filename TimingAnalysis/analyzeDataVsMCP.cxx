@@ -135,9 +135,10 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
 		{
 		  TString path;
 		  path.Form("root://cmsxrootd.fnal.gov//store/user/cmstestbeam/2019_04_April_CMSTiming/KeySightScope/RecoData/TimingDAQRECO/RecoWithTracks/v1/run_scope%i_converted.root/pulse",run);
-	       		  std::cout<<"Searching File: "<<path<<std::endl;
+	    std::cout<<"Searching File: "<<path<<std::endl;
 		  TString path2 = path.Remove(path.Length()-6,6);
 		  TFile *f_tmp = TFile::Open(path2);
+      f_tmp->ls();
 		  if (f_tmp != nullptr) {
 			  TChain chain_tmp("pulse");
 			  chain_tmp.Add(path);
@@ -223,10 +224,6 @@ else {
   bool low=false;
 
   std::cout<<"Filling "<<filename<<" with "<<filename<<std::endl;
-  TString filename_log(filename);
-  filename += ".log";
-  std::ofstream logfile(filename, std::ofstream::out);
-  logfile<<"File created with name: "<<filename<<std::endl;
 
   bool channelScan=true;
   int secondchannel_local = 0;
@@ -338,8 +335,6 @@ else {
 
 
   f_root->Close();
-  logfile << "Closing...\n";
-  logfile.close();
 
   // if (empty || full || low) {
   //   std::string newfilename(filename);
@@ -353,5 +348,6 @@ else {
   //   std::rename(filename.c_str(), newfilename.c_str());
   // }
 
+  std::cout<<"Exiting..."<<std::endl;
   return 0;
 }
