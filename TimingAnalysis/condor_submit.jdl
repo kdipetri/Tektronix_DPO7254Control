@@ -6,10 +6,10 @@ error       = condor/run_$(ProcId).err
 log         = condor/run_$(ProcId).log
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-transfer_input_files = analyzeDataVsMCP, April2019_geomCuts.csv, Run_config.txt
+transfer_input_files = analyzeDataVsMCP, April2019_geomCuts_stripped.csv, Run_config.txt
 
 +JobFlavour = "workday"
 
-toqueque = 60
+toqueque = 32
 arguments = $(ProcId) $(toqueque)
 queue $(toqueque)

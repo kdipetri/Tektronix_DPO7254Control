@@ -24,7 +24,7 @@ if len(sys.argv)>2:
         NewTracker = 1
     print(f'Using: id {id} with NewTracker {NewTracker}')
 
-with open("April2019_geomCuts.csv") as csv_file:
+with open("April2019_geomCuts_stripped.csv") as csv_file:
     print("Opening file")
     csv_reader = csv.reader(csv_file, delimiter=',')
     row_counter = 0;
@@ -34,7 +34,7 @@ with open("April2019_geomCuts.csv") as csv_file:
             row_counter += 1
         except:
             continue
-        if (row_counter-1 == int(sys.argv[1])):
+        if (row_counter-1 == id):
             configNumber = content[0]
             board = content[2]
             DUTchannel = content[3]
@@ -52,14 +52,26 @@ with open("April2019_geomCuts.csv") as csv_file:
             filter = "0"
 
             DUTName = f'{sensor}_{board}'
+            DUTName = ' '.join(DUTName.split())
             outputDir = "/eos/user/n/nminafra/www/FNAL_output/FNAL_2019/"
+            # outputDir = "/afs/cern.ch/work/n/nminafra/public/FNAL_2019/"
+            # outputDir = "Results/"
+            # outputDir = ""
 
             s = f'./analyzeDataVsMCP --outputdir {outputDir} -i {input_configFile} -f {DUTchannel} -k {configNumber} -t {DUT_threshold} -s {DUT_saturation} -c {CFD} --MCPthreshold {MCPthreshold} --lowpass {filter} -n {DUTName} -y {NewTracker} --xmin {xmin} --xmax {xmax} --ymin {ymin} --ymax {ymax} --MCPsaturation {MCPsaturation}'
             print(s)
+            # subprocess.call('pwd',shell=True)
+            # subprocess.call('ls .',shell=True)
+            # subprocess.call(f'echo "lol" > {outputDir}test.log ',shell=True)
+
             subprocess.call('export X509_USER_PROXY=$PWD/x509_proxy',shell=True)
             subprocess.call('voms-proxy-init --voms cms --noregen',shell=True)
-            subprocess.call('voms-proxy-info',shell=True)
             subprocess.call(s,shell=True)
+
+            # print("ls...")
+            # subprocess.call(f'ls {outputDir}',shell=True)
+            # subprocess.call(f'pwd {outputDir}',shell=True)
+            # subprocess.call('ls .',shell=True)
             print("Done!")
             # with open(f'{outputDir}test_{int(sys.argv[1])}_{int(sys.argv[2])}.log','w') as f:
             #     f.write("This is a test!")

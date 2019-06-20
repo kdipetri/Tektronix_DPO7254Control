@@ -179,13 +179,13 @@ class TimingAnalysis : public pulse
       // Histo declaration, create new for a new file
       TH1D h_deltat_SimpleThreshold("h_deltat_SimpleThreshold","Time Difference wrt MCP using simple threshold; t(s)",2000,-10e-9,10e-9);
       TH1D h_deltat_Smart("h_deltat_Smart","Time Difference wrt MCP; t(s)",5000,-10e-9,10e-9);
-      TH1D h_TimeFromTrigger_Det0("h_TimeFromTrigger_Det0","Time Difference bw MCP and trigger; t(s)",1000,-150e-9,-50e-9);
-      TH1D h_TimeFromTrigger_Det1("h_TimeFromTrigger_Det1","Time Difference bw DUT and trigger; t(s)",1000,-150e-9,-50e-9);
+      TH1D h_TimeFromTrigger_Det0("h_TimeFromTrigger_Det0","Time Difference bw MCP and trigger; t(s)",200,20e-9,40e-9);
+      TH1D h_TimeFromTrigger_Det1("h_TimeFromTrigger_Det1","Time Difference bw DUT and trigger; t(s)",200,20e-9,40e-9);
 
-      TH1D h_max_Det0("h_max_Det0","Amplitude MCP; V",200,0,parameters.rangeMax_ch0);
-      TH1D h_max_Det1("h_max_Det1","",100,0,parameters.rangeMax_ch1);
-      TH1D h_max_selected_Det0("h_max_selected_Det0","Amplitude of selected samples (MCP); V",200,0,parameters.rangeMax_ch0);
-      TH1D h_max_selected_Det1("h_max_selected_Det1","Amplitude of selected samples (DUT); V",100,0,parameters.rangeMax_ch1);
+      TH1D h_max_Det0("h_max_Det0","Amplitude MCP; V",200,0,2*parameters.rangeMax_ch0);
+      TH1D h_max_Det1("h_max_Det1","",100,0,2*parameters.rangeMax_ch1);
+      TH1D h_max_selected_Det0("h_max_selected_Det0","Amplitude of selected samples (MCP); V",200,0,1.2*parameters.rangeMax_ch0);
+      TH1D h_max_selected_Det1("h_max_selected_Det1","Amplitude of selected samples (DUT); V",100,0,1.2*parameters.rangeMax_ch1);
       TH1D integral_Det1("integral_Det1","Integral (DUT); ??",1000,-1,1);
       TH1D h_baseline_Det0("h_baseline_Det0","Baseline of MCP; V",200,-0.01,0.01);
       TH1D h_baseline_Det1("h_baseline_Det1","Baseline of DUT; V",200,-0.01,0.01);
@@ -194,8 +194,8 @@ class TimingAnalysis : public pulse
       TH1D h_SNR_Det0("h_SNR_Det0","SNR of MCP; SNR",320,0,500);
       TH1D h_SNR_Det1("h_SNR_Det1","SNR of DUT; SNR",160,0,180);
 
-      TH1D h_risetime_Det0("h_risetime_Det0","Risetime of MCP; rt (s)",200,0,4e-9);
-      TH1D h_risetime_Det1("h_risetime_Det1","Risetime of DUT; rt (s)",200,0,4e-9);
+      TH1D h_risetime_Det0("h_risetime_Det0","Risetime of MCP; rt (s)",200,0,2e-9);
+      TH1D h_risetime_Det1("h_risetime_Det1","Risetime of DUT; rt (s)",200,0,2e-9);
 
       TH1D h_nOfPeaks_Det0("h_nOfPeaks_Det0","Number of peaks found per trigger (MCP); number of peaks",10,0,10);
       TH1D h_nOfPeaks_Det1("h_nOfPeaks_Det1","Number of peaks found per trigger (DUT); number of peaks",10,0,10);
@@ -312,10 +312,10 @@ class TimingAnalysis : public pulse
       	  DataSamplesA.push_back( 1e-3 * (double) channel[ChannelMeasureA][i] );
       	  DataSamplesB.push_back( 1e-3 * (double) channel[ChannelMeasureB][i] );
       	}
-        for (int i=0; i< 500; ++i) {
-          time_samples[i] = (Int_t) (1e12 * (time[0][i+200]-time[0][0]));
-          voltage_samples[i] = (Int_t) (1e6 * channel[ChannelMeasureB][i+200]);
-      	}
+        // for (int i=0; i< 500; ++i) {
+        //   time_samples[i] = (Int_t) (1e12 * (time[0][i+200]-time[0][0]));
+        //   voltage_samples[i] = (Int_t) (1e6 * channel[ChannelMeasureB][i+200]);
+      	// }
 
 
     	  parameters.detectorNumber=0;
@@ -412,10 +412,10 @@ class TimingAnalysis : public pulse
         	g_rmswithTime.SetPoint(pointCorr2, eventCounter, h_deltat_Smart.GetRMS());
         	g_noiseDet1WithTime.SetPoint(pointCorr2++, eventCounter, ch2_baselineRms);
 
-		bool selected = (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 10e-9);
-		if (selectOnlyNewTracker_)
-			selected = selected && (nplanes>=19 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
-		else selected = selected && (npix>0 && nback>0 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
+		bool selected = (coincidences==2 && TMath::Abs(T_Sample_B-T_Sample_A) < 50e-9);
+		// if (selectOnlyNewTracker_)
+		// 	selected = selected && (nplanes>=19 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
+		// else selected = selected && (npix>0 && nback>0 && x_dut[ChannelMeasureB] > minTrackerX_ && x_dut[ChannelMeasureB] < maxTrackerX_ && y_dut[ChannelMeasureB] > minTrackerY_ && y_dut[ChannelMeasureB] < maxTrackerY_ && ntracks == 1);
 
 		if (selected) {
 

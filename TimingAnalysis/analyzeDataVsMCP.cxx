@@ -146,6 +146,7 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
 			  size_t n = chain_tmp.GetListOfBranches()->GetEntries();
 			  for( size_t i = 0; i < n; ++ i ) {
 			    TBranch *subbr = dynamic_cast<TBranch*>(chain_tmp.GetListOfBranches()->At(i));
+          // std::cout<<subbr->GetName()<<std::endl;
 			    if (subbr->GetName() == "nback")
             nbackfound = true;
 			  }
@@ -172,12 +173,15 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
   TimingAnalysis example_analyzeData(input_tree, selectOnlyNewTracker, minTrackerX, maxTrackerX, minTrackerY, maxTrackerY);
 
   // Output file
+  TString filenameTail(namesensor);
+  filenameTail+="_config";
+  filenameTail+=configuration;
+
   if(cfd_threshold >=0){
   float cfd_tmp =0 ;
   cfd_tmp = std::abs(cfd_threshold * 100);
   std::string cfd_string = std::to_string(cfd_tmp);
   cfd_string = cfd_string.erase(cfd_string.size()-7,cfd_string.size());
-  TString filenameTail(namesensor);
   filenameTail+="_CFD";
   filenameTail+=cfd_string;
   filenameTail+="_Ch";
@@ -193,13 +197,12 @@ std::cout<<"Run_config_in: "<<Run_config_in<<std::endl;
    else if (lowpass < 0)  {
 	   filenameTail+="_LPscan";
    		}
-  filename += outputdir;
+  filename = outputdir;
   filename += filenameTail;
   filename += ".root";
  	 }
 
 else {
-  TString filenameTail(namesensor);
   filenameTail+="_CFDscan";
   filenameTail+="_Ch";
   filenameTail+=firstchannel;
@@ -214,12 +217,19 @@ else {
    else if (lowpass < 0)  {
 	   filenameTail+="_LPscan";
    		}
-  filename += outputdir;
+  filename = outputdir;
   filename += filenameTail;
   filename += ".root";
 	}
 
   TFile * f_root = new TFile (filename.c_str(),"RECREATE");
+  TString filenameTmp = outputdir;
+  filenameTmp += filenameTail;
+  filenameTmp += ".log";
+  // std::ofstream f(filenameTmp);
+  // f << "Test\n";
+  // f.close();
+
   bool empty=false;
   bool full=false;
   bool low=false;
