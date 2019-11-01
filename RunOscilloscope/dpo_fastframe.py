@@ -1,6 +1,6 @@
 """
 VISA Control: FastFrame Acquisition
-Tektronix DPO7254 Control
+Tektronix TDS7704B Control
 FNAL November 2018
 CMS MTD ETL Test beam
 """
@@ -14,6 +14,7 @@ import signal
 import os
 import shutil
 import datetime
+import time              
 from shutil import copy
 
 stop_asap = False
@@ -69,55 +70,64 @@ def copynew(source,destination):
 
 """#################SEARCH/CONNECT#################"""
 # establish communication with dpo
-rm = visa.ResourceManager()
-dpo = rm.open_resource('TCPIP::192.168.133.160::INSTR')
+visa.log_to_screen
+rm = visa.ResourceManager("@py")
+dpo = rm.open_resource('TCPIP0::192.168.133.1::INSTR')
+#dpo = rm.open_resource('TCPIP::192.168.133.1::INSTR')
 dpo.timeout = 3000000
 dpo.encoding = 'latin_1'
-print(dpo.query('*idn?'))
+dpo.read_termination = '\n'
+dpo.write_termination = '\n'
+dpo.write('SYSTEM:REMOTE')
+print(dpo)
+print(dpo.query('*IDN?'))
 # dpo.write('*rst')
 
 
 parser = argparse.ArgumentParser(description='Run info.')
-
-parser.add_argument('--totalNumber', metavar='tot', type=int,help='totalNumber of data point',required=True)
-parser.add_argument('--numFrames',metavar='Frames', type=str,default = 500, help='numFrames (default 500)',required=False)
-parser.add_argument('--trigCh',metavar='trigCh', type=str, default='AUX',help='trigger Channel (default Aux (-0.1V))',required=False)
-parser.add_argument('--trig',metavar='trig', type=float, default= -0.05, help='trigger value in V (default Aux (-0.05V))',required=False)
+parser.add_argument('--numEvents',metavar='Events', type=str,default = 10, help='numEvents (default 10)',required=False)
+parser.add_argument('--trigCh',metavar='trigCh', type=str, default=1,help='trigger Channel (default Ch1 (-0.01V))',required=False)
+parser.add_argument('--trig',metavar='trig', type=float, default= -0.01, help='trigger value in V (default Ch1 (-0.01V))',required=False)
+parser.add_argument('--horizontalWindow',metavar='horizontalWindow', type=str,default = 50, help='horizontal Window (default 50)',required=False)
 
 args = parser.parse_args()
 
 
 """#################CONFIGURE INSTRUMENT#################"""
 # variables for individual settings
-hScale = 10e-9  # horizontal scale in seconds, !!!!DO NOT CHANGE!!!! 
-numFrames = int(args.numFrames) # number of frames for each file
-totalNumber = int(args.totalNumber) # total number of frames
+#hScale = 10e-9  # horizontal scale in seconds, !!!!DO NOT CHANGE!!!! 
+#numFrames = int(args.numFrames) # number of frames for each file
+hScale = float(args.horizontalWindow)*1e-9 # horizontal scale in seconds
+numEvents = int(args.numEvents) # number of events for each file
+#samplingrate = float(args.sampleRate)*1e+9
+#numPoints = samplingrate*hScale
 
 #vertical scale
-vScale_ch1 = 0.05 # in Volts for division
-vScale_ch2 = 0.01 # in Volts for division
+vScale_ch1 = 0.50 # in Volts for division
+vScale_ch2 = 0.05 # in Volts for division
 vScale_ch3 = 0.01 # in Volts for division
 vScale_ch4 = 0.01 # in Volts for division
 
 #vertical position
-vPos_ch1 = 4  # in Divisions
-vPos_ch2 = 4  # in Divisions
-vPos_ch3 = 4  # in Divisions
-vPos_ch4 = 4  # in Divisions
+vPos_ch1 = 0  # in Divisions
+vPos_ch2 = 0  # in Divisions
+vPos_ch3 = 0  # in Divisions
+vPos_ch4 = 0  # in Divisions
 
 #trigger
-trigCh = (args.trigCh) # string with trigger channel number [CH1..CH4]
+#trigCh = (args.trigCh) # string with trigger channel number [CH1..CH4]
+trigCh = str(args.trigCh)
+if trigCh != "AUX": trigCh = 'ch'+trigCh
 trigLevel = float(args.trig)
 
 date = datetime.datetime.now()
 
 
-if totalNumber < numFrames:
-    raise Exception("total number of frames < number of frames for each file")    
-
-    
-if numFrames > 2000:
-    ("WARNING: numFrames > 2000 --> the DUT might need more than one spill to fill a waveform file.\n")    
+#if numEvents < numFrames:
+#    raise Exception("total number of frames < number of frames for each file")    
+#    
+#if numFrames > 2000:
+#    ("WARNING: numFrames > 2000 --> the DUT might need more than one spill to fill a waveform file.\n")    
 
 
 """#################CONFIGURE RUN NUMBER#################"""
@@ -135,8 +145,11 @@ with open('runNumber.txt','w') as file:
 
 
 """#################SET THE OUTPUT FOLDER#################"""
-# The scope save runs localy on a shared folder with
-path = "c:/ETL_Nov2018/run_scope{}".format(runNumber)
+# Sets the ouptut folder on the scope
+# The scope save runs locally at KarriWaveforms
+# This directory is shared with my laptop at ScopeMount 
+path = "C:/KarriWaveforms/scope_run{}".format(runNumber)
+#path = "C:/KarriWaveforms/run_scope{}".format(runNumber)
 dpo.write('filesystem:mkdir "{}"'.format(path))
 log_path = "Logbook.txt"
 
@@ -148,8 +161,7 @@ logf = open(log_path,"a+")
 logf.write("\n\n#### SCOPE LOGBOOK -- RUN NUMBER {} ####\n\n".format(runNumber))
 logf.write("Date:\t{}\n".format(date))
 logf.write("---------------------------------------------------------\n")
-logf.write("Total number of triggers acquired: {} \n".format(totalNumber))
-logf.write("Number of triggers per file: {} \n".format(numFrames))
+logf.write("Total number of  acquired: {} \n".format(numEvents))
 logf.write("---------------------------------------------------------\n\n")
 
 
@@ -159,7 +171,7 @@ logf.write("---------------------------------------------------------\n\n")
 dpo.write('acquire:state off')
 dpo.write('horizontal:mode:scale {}'.format(hScale))
 dpo.write('horizontal:fastframe:state on')
-dpo.write('horizontal:fastframe:count {}'.format(numFrames))
+dpo.write('horizontal:fastframe:count {}'.format(numEvents))
 
 print("# SCOPE HORIZONTAL SETUP #")
 print('Horizontal scale set to {} for division\n'.format(hScale))
@@ -231,14 +243,14 @@ dpo.write('header off')
 dpo.write('horizontal:fastframe:sumframe none')
 dpo.write('data:encdg fastest')
 # dpo.write('data:source ch1')
-recordLength = int(dpo.query('horizontal:mode:recordlength?').strip())
+#recordLength = 2000 
+recordLength = int(dpo.query('horizontal:recordlength?').strip())
 dpo.write('data:stop {}'.format(recordLength))
 dpo.write('wfmoutpre:byt_n 1')
 dpo.write('data:framestart 1')
-dpo.write('data:framestop {}'.format(numFrames))
+dpo.write('data:framestop {}'.format(numEvents))
 print('Data transfer settings configured.\n')
 
-dpo.read_termination = '\n'
 
 
 
@@ -246,36 +258,58 @@ dpo.read_termination = '\n'
 """#################ACQUIRE DATA#################"""
 i = 0
 filename='{}/fastframe'.format(path)
-while (i*numFrames<totalNumber) and stop_asap==False:
-    i+=1
-    print('Acquiring waveform {}'.format(i))
-    dpo.write('acquire:stopafter sequence')
-    dpo.write('acquire:state on')
-    dpo.query('*opc?')
-    print('Waveform {} acquired'.format(i))
-    dpo.write('save:waveform:fileformat INTERNAL')
-    dpo.write('save:waveform ch1, "%s_%d_CH1.wfm"'%(filename,i))
-    dpo.write('save:waveform ch2, "%s_%d_CH2.wfm"'%(filename,i))
-    dpo.write('save:waveform ch3, "%s_%d_CH3.wfm"'%(filename,i))
-    dpo.write('save:waveform ch4, "%s_%d_CH4.wfm"'%(filename,i))
-    
-    print('Waveform {} saved.\n'.format(i))
+
+#while (i<numEvents) and stop_asap==False:
+#    i+=1
+
+print('Acquiring waveform {}'.format(i))
+dpo.write('acquire:stopafter sequence')
+print('aquiring')
+dpo.write('acquire:state on')
+print('state on')
+
+# dpo.query_ascii_values("trace:data?")
+# dpo.query('*opc?')
+print(dpo.query('*opc?'))
+print('Waveform {} acquired'.format(i))
+
+dpo.write('save:waveform:fileformat INTERNAL')
+dpo.write('save:waveform ch1, "%s_%d_CH1.wfm"'%(filename,i))
+dpo.write('save:waveform ch2, "%s_%d_CH2.wfm"'%(filename,i))
+dpo.write('save:waveform ch3, "%s_%d_CH3.wfm"'%(filename,i))
+dpo.write('save:waveform ch4, "%s_%d_CH4.wfm"'%(filename,i))
+print(dpo.query('*opc?'))
+print('Waveform {} saved.\n'.format(i))
+#if (int(dpo.query(':ADER?')) == 1): 
+#    print( "Acquisition complete")
+#    break
+#else:
+#    print( "Still waiting") 
+
+print('Waiting to be sure.\n')
+time.sleep(0.1)
 
         
-import time              
+dpo.close()
     
-    
-path_ftbf = "/Tektronix/run_scope{}".format(runNumber) #otsdaq path (shared folder with the scope)
-path_lxplus = ("/lxplus/Scope_standalone/RAW/run_scope%d"%(runNumber)) # lxplus folder mounted on otsdaq
+# Check if saved on my computer      
+# Be sure to mount the directory beforehand
+# sudo mount_smbfs //192.168.133.1/KarriWaveforms ScopeMount/ 
+# and enter laptop password
+path_karri_laptop = "/Users/karridipetrillo/Documents/Fermilab/MTD/SiDetTesting/ScopeMount/scope_run{}".format(runNumber) #
 
-while len(os.listdir(path_ftbf)) < 4*i: 
+# check  
+i=0
+while len(os.listdir(path_karri_laptop)) < 4: 
+    i+=1
+    print("waiting for files... loop {}\n".format(i))
     time.sleep(1)
 
-print('Start copying the file on lxplus....')
-    
-shutil.copytree(path_ftbf,path_lxplus)  
+#path_lxplus = ("/lxplus/Scope_standalone/RAW/run_scope%d"%(runNumber)) # lxplus folder mounted on otsdaq
+#print('Start copying the file on lxplus....')   
+#shutil.copytree(path_ftbf,path_lxplus)  
+#print('Waveforms copied.\n')
 
-print('Waveforms copied.\n')
 print('Ending Run {}.\n'.format(runNumber))
 
 print("\n\n\n ********  DID YOU UPDATE THE LOGBOOK AND SPREADSHEET?? ******** \n\n")
@@ -299,4 +333,3 @@ print('\n')
 #
 
 
-dpo.close()

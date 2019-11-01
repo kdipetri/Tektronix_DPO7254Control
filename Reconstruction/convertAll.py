@@ -6,7 +6,7 @@ p = argparse.ArgumentParser()
 p.add_argument('-r','--run',default='')
 args = p.parse_args()
 
-scope_dir='/eos/cms/store/group/phys_susy/razor/FNAL_TB_1811/Scope_standalone'
+scope_dir='/Users/karridipetrillo/Documents/Fermilab/MTD/SiDetTesting'
 done_runs = glob.glob(scope_dir+'/ROOT/*.root')
 new_runs = glob.glob(scope_dir+'/RAW/*'+str(args.run)+'/')
 
